@@ -11,7 +11,7 @@ android {
     defaultConfig {
         applicationId = "com.ae.news"
         minSdk = 29
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -40,8 +40,12 @@ android {
 
 dependencies {
 
-    implementation(libs.retrofit)
+
+    implementation(libs.timeago)
+    implementation(libs.glide)
+    implementation(libs.logging.interceptor)
     implementation(libs.converter.gson)
+    implementation(libs.retrofit)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

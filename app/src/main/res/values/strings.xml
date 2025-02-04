@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">News</string>
+    <string name="please_wait">Please Wait…</string>
+    <string name="try_again">Try again</string>
+    <string name="view_full_article">View Full Article</string>
+    <string name="good_day">Good Day,\nHere is some News for you</string>
+    <string name="view_all">View All</string>
 
 </resources>

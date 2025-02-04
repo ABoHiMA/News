@@ -4,7 +4,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="red">#EC4B4B</color>
     <color name="blue">#0000ff</color>
-    <color name="grey">#808080</color>
+    <color name="grey">#A0A0A0</color>
     <color name="transparent_color">#00000000</color>
     <color name="primary_color">@color/white</color>
     <color name="on_primary_color">#171717</color>
@@ -12,4 +12,5 @@
     <color name="on_secondary_color">@color/on_primary_color</color>
     <color name="background_color">@color/primary_color</color>
     <color name="on_background_color">@color/on_primary_color</color>
+    <color name="text_color">@color/primary_color</color>
 </resources>
