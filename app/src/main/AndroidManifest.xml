@@ -24,9 +24,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.home.fragments.category.CategoryActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.home.HomeActivity"
             android:exported="false" />
         <activity

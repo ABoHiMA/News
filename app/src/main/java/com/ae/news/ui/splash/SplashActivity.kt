@@ -18,7 +18,7 @@ class SplashActivity : AppCompatActivity() {
         setContentView(R.layout.activity_splash)
 
         val backgroundImage: ImageView = findViewById(R.id.img_logo)
-        val slideAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_in)
+        val slideAnimation = AnimationUtils.loadAnimation(this, R.anim.side_slide)
         backgroundImage.startAnimation(slideAnimation)
 
         Handler(Looper.getMainLooper()).postDelayed({
@@ -29,6 +29,7 @@ class SplashActivity : AppCompatActivity() {
     private fun navigateToApp() {
         val intent = Intent(this, HomeActivity::class.java)
         startActivity(intent)
+        finish()
     }
 
 }

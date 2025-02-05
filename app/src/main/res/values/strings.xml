@@ -5,5 +5,16 @@
     <string name="view_full_article">View Full Article</string>
     <string name="good_day">Good Day,\nHere is some News for you</string>
     <string name="view_all">View All</string>
+    <string name="news_app">News_App</string>
+    <string name="menu_home">Go To Home</string>
+    <string name="general">General</string>
+    <string name="business">Business</string>
+    <string name="sports">Sports</string>
+    <string name="technology">Technology</string>
+    <string name="science">Science</string>
+    <string name="entertainment">Entertainment</string>
+    <string name="health">Health</string>
+    <string name="home">Home</string>
+    <string name="search">Search</string>
 
 </resources>

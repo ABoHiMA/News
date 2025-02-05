@@ -13,7 +13,7 @@
         android:layout_height="match_parent">
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_img"
+            android:id="@+id/card_news"
             android:layout_width="match_parent"
             android:layout_height="220dp"
             app:cardCornerRadius="18dp"
@@ -37,7 +37,7 @@
             android:textColor="@color/secondary_color"
             android:textSize="14sp"
             app:layout_constraintBottom_toTopOf="@id/btn_viewFull"
-            app:layout_constraintTop_toBottomOf="@id/card_img"
+            app:layout_constraintTop_toBottomOf="@id/card_news"
             tools:text="@tools:sample/lorem/random" />
 
         <Button
