@@ -17,14 +17,14 @@
         <ProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:indeterminateTint="@color/red"
-            app:layout_constraintBottom_toBottomOf="@id/card_img"
-            app:layout_constraintEnd_toEndOf="@id/card_img"
-            app:layout_constraintStart_toStartOf="@id/card_img"
-            app:layout_constraintTop_toTopOf="@id/card_img" />
+            android:indeterminateTint="@color/on_primary_color"
+            app:layout_constraintBottom_toBottomOf="@id/img_news"
+            app:layout_constraintEnd_toEndOf="@id/img_news"
+            app:layout_constraintStart_toStartOf="@id/img_news"
+            app:layout_constraintTop_toTopOf="@id/img_news" />
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/card_img"
+            android:id="@+id/img_news"
             android:layout_width="match_parent"
             android:layout_height="220dp"
             android:scaleType="centerCrop"
@@ -42,7 +42,7 @@
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/txt_author"
-            app:layout_constraintTop_toBottomOf="@id/card_img"
+            app:layout_constraintTop_toBottomOf="@id/img_news"
             tools:text="@tools:sample/lorem/random" />
 
         <TextView

@@ -43,7 +43,7 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.ViewHolder>() {
             Glide.with(itemBinding.root)
                 .load(news?.urlToImage)
                 .error(R.drawable.ic_general)
-                .into(itemBinding.cardImg)
+                .into(itemBinding.imgNews)
 
             itemBinding.txtTitle.text = news?.title
             itemBinding.txtAuthor.text = authorName

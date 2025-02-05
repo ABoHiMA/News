@@ -8,6 +8,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.ae.news.api.manager.ApiManager
 import com.ae.news.databinding.FragmentNewsBinding
+import com.ae.news.models.categories.Category
 import com.ae.news.models.errorResponse.ErrorResponse
 import com.ae.news.models.newsResponse.News
 import com.ae.news.models.newsResponse.NewsResponse
@@ -21,8 +22,17 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class NewsFragment : Fragment() {
-    lateinit var viewBinding: FragmentNewsBinding
-    val adapter = NewsAdapter()
+    private lateinit var viewBinding: FragmentNewsBinding
+    private val adapter = NewsAdapter()
+    var category: Category? = null
+
+    companion object {
+        fun getInstance(category: Category): NewsFragment {
+            val fragment = NewsFragment()
+            fragment.category = category
+            return fragment
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -46,7 +56,8 @@ class NewsFragment : Fragment() {
 
     private fun loadSources() {
         showLoadingView()
-        ApiManager.webServices().getSources().enqueue(object : Callback<SourcesResponse> {
+        ApiManager.webServices().getSources(category!!.id)
+            .enqueue(object : Callback<SourcesResponse> {
 
             override fun onFailure(response: Call<SourcesResponse>, error: Throwable) {
                 showErrorView(
@@ -131,7 +142,6 @@ class NewsFragment : Fragment() {
         adapter.setNews(newsList)
 
     }
-
 
     private fun showLoadingView() {
         viewBinding.loading.isVisible = true
