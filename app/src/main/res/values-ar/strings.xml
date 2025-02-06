@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">News</string>
+    <string name="news">الاخبار</string>
+    <string name="please_wait">برجاء الانتظار</string>
+    <string name="try_again">حاول مرة اخرى</string>
+    <string name="view_full_article">فتح المقالة كاملة</string>
+    <string name="good_day">يوم جيد، \nإليك بعض الأخبار</string>
+    <string name="view_all">فتح</string>
+    <string name="menu_home">الذهاب الى الصفحة الرئيسية</string>
+    <string name="general">عام</string>
+    <string name="business">أعمال</string>
+    <string name="sports">رياضة</string>
+    <string name="technology">تكنولوجيا</string>
+    <string name="science">علوم</string>
+    <string name="entertainment">ترفيه</string>
+    <string name="health">صحة</string>
+    <string name="home">الرئيسية</string>
+    <string name="search">بحث</string>
+    <string name="stay_informed">ابق على اطلاع بنقرة واحدة فقط!\n ابحث عن أحدث الأخبار الآن.</string>
+    <string name="language">اللغة</string>
+    <string name="theme">الواجهة</string>
+    <string-array name="languages">
+        <item>الإنجليزية</item>
+        <item>العربية</item>
+    </string-array>
+    <string-array name="themes">
+        <item>وضع النظام</item>
+        <item>وضع النهار</item>
+        <item>وضع الداكن</item>
+    </string-array>
+</resources>

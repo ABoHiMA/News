@@ -1,5 +1,6 @@
 package com.ae.news.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.ae.news.R
@@ -7,6 +8,7 @@ import com.ae.news.databinding.ActivityHomeBinding
 import com.ae.news.models.categories.Category
 import com.ae.news.ui.home.fragments.category.CategoryFragment
 import com.ae.news.ui.home.fragments.news.NewsFragment
+import com.ae.news.ui.search.SearchActivity
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var viewBinding: ActivityHomeBinding
@@ -21,6 +23,11 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun initAppBar() {
+        viewBinding.appBarHome.btnSearch.setOnClickListener {
+            val intent = Intent(this, SearchActivity()::class.java)
+            startActivity(intent)
+        }
+
         viewBinding.appBarHome.toolBar.setNavigationOnClickListener {
             viewBinding.drawerLayout.open()
         }

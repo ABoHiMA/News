@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:text="@string/news_app"
+        android:text="@string/news"
         android:textColor="@color/primary_color"
         android:textSize="32sp"
         android:textStyle="bold" />

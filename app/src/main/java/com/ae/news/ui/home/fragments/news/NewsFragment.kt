@@ -121,7 +121,7 @@ class NewsFragment : Fragment() {
                         response.errorBody()?.string(), ErrorResponse::class.java
                     )
                     val message = errorResponse.message ?: "Something went wrong"
-                    showErrorView(message) { loadSources() }
+                    showErrorView(message) { loadNews(sourceId) }
                     return
                 }
                 showSuccessView()

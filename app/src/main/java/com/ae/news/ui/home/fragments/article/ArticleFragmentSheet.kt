@@ -46,6 +46,7 @@ class ArticleFragmentSheet : BottomSheetDialogFragment() {
             val intent = Intent(requireContext(), WebViewActivity::class.java)
             intent.putExtra("url", article?.url ?: "https://www.google.com")
             startActivity(intent)
+            dismiss()
         }
     }
 
