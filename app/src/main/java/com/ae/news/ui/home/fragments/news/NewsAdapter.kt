@@ -12,10 +12,12 @@ import com.github.marlonlom.utilities.timeago.TimeAgo
 
 class NewsAdapter : RecyclerView.Adapter<NewsAdapter.ViewHolder>() {
     private var newsList: List<News?>? = null
+    private var onNewsClick: ((news: News) -> Unit)? = null
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setNews(newsList: List<News?>?) {
+    fun setNews(newsList: List<News?>?, onNewsClick: (news: News) -> Unit) {
         this.newsList = newsList
+        this.onNewsClick = onNewsClick
         notifyDataSetChanged()
     }
 
@@ -30,26 +32,23 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val news = newsList?.get(position)
         holder.bindData(news)
-
+        holder.itemView.setOnClickListener {
+            newsList?.get(position)?.let { it1 -> onNewsClick?.let { it2 -> it2(it1) } }
+        }
     }
 
-    inner class ViewHolder(val itemBinding: ItemNewsBinding) :
+    inner class ViewHolder(private val itemBinding: ItemNewsBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
-
         fun bindData(news: News?) {
             val authorName = if (news?.author != null) "By: ${news.author}" else ""
             val formattedDate = news?.formattedPublishAt()?.let { TimeAgo.using(it) } ?: ""
 
-            Glide.with(itemBinding.root)
-                .load(news?.urlToImage)
-                .error(R.drawable.ic_general)
+            Glide.with(itemBinding.root).load(news?.urlToImage).error(R.drawable.ic_launcher)
                 .into(itemBinding.imgNews)
 
             itemBinding.txtTitle.text = news?.title
             itemBinding.txtAuthor.text = authorName
             itemBinding.txtDate.text = formattedDate
-
         }
     }
-
 }

@@ -38,9 +38,7 @@ class CategoryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         initRecycler()
-
     }
 
     private fun initRecycler() {
@@ -53,5 +51,4 @@ class CategoryFragment : Fragment() {
     private fun onCategoryClick(category: Category) {
         onCategoryClickListener?.onCategoryClick(category)
     }
-
 }

@@ -16,8 +16,11 @@ class HomeActivity : AppCompatActivity() {
         viewBinding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
 
+        initAppBar()
         startCategoryFragment()
+    }
 
+    private fun initAppBar() {
         viewBinding.appBarHome.toolBar.setNavigationOnClickListener {
             viewBinding.drawerLayout.open()
         }
@@ -34,20 +37,16 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun startCategoryFragment() {
-        supportFragmentManager
-            .beginTransaction()
-            .setCustomAnimations(
-                R.anim.exit_to_left,
-                R.anim.enter_from_right,
-                R.anim.exit_to_right,
-                R.anim.enter_from_left,
+        supportFragmentManager.beginTransaction().setCustomAnimations(
+            R.anim.exit_to_left,
+            R.anim.enter_from_right,
+            R.anim.exit_to_right,
+            R.anim.enter_from_left,
+        ).replace(
+            R.id.fragment_container, CategoryFragment.getInstance(
+                onCategoryClickListener = ::onCategoryClick
             )
-            .replace(
-                R.id.fragment_container, CategoryFragment.getInstance(
-                    onCategoryClickListener = ::onCategoryClick
-                )
-            )
-            .commit()
+        ).commit()
     }
 
     private fun onCategoryClick(category: Category) {
@@ -56,19 +55,14 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun startNewsFragment(category: Category) {
-        supportFragmentManager
-            .beginTransaction()
-            .setCustomAnimations(
-                R.anim.enter_from_right,
-                R.anim.exit_to_left,
-                R.anim.enter_from_left,
-                R.anim.exit_to_right,
-            )
-            .replace(
-                R.id.fragment_container, NewsFragment.getInstance(category)
-            )
-            .addToBackStack(null)
-            .commit()
+        supportFragmentManager.beginTransaction().setCustomAnimations(
+            R.anim.enter_from_right,
+            R.anim.exit_to_left,
+            R.anim.enter_from_left,
+            R.anim.exit_to_right,
+        ).replace(
+            R.id.fragment_container, NewsFragment.getInstance(category)
+        ).addToBackStack(null).commit()
     }
 
 }

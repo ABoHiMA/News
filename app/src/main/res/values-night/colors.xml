@@ -6,7 +6,8 @@
     <color name="blue">#0000ff</color>
     <color name="grey">#A0A0A0</color>
     <color name="transparent_color">#00000000</color>
-    <color name="primary_color">#171717</color>
+    <color name="dark_color">#171717</color>
+    <color name="primary_color">@color/dark_color</color>
     <color name="on_primary_color">@color/white</color>
     <color name="secondary_color">@color/primary_color</color>
     <color name="on_secondary_color">@color/on_primary_color</color>

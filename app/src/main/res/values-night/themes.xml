@@ -22,35 +22,9 @@
         <item name="android:layout_marginHorizontal">6dp</item>
     </style>
 
-    <style name="img_logo" parent="Widget.AppCompat.ImageButton">
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:src">@drawable/logo_night</item>
-        <item name="backgroundTint">@color/transparent_color</item>
-    </style>
-
-    <style name="img_route" parent="Widget.AppCompat.ImageButton">
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:src">@drawable/route_night</item>
-        <item name="backgroundTint">@color/transparent_color</item>
-        <item name="android:layout_margin">18dp</item>
-    </style>
-
     <style name="RoundedImageView">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">18dp</item>
     </style>
-
-
-    <style name="Theme.News.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="Theme.News.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="Theme.News.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
 
 </resources>
