@@ -20,12 +20,17 @@
     <string name="stay_informed">ابق على اطلاع بنقرة واحدة فقط!\n ابحث عن أحدث الأخبار الآن.</string>
     <string name="language">اللغة</string>
     <string name="theme">الواجهة</string>
+    <string name="alert">تحذير</string>
+    <string name="ok">موافق</string>
+    <string name="cancel">إالغاء</string>
+    <string name="change_theme">لتغيير الثيم سيتم إعادة تشغيل التطبيق؟</string>
+    <string name="change_language">لتغيير اللغة سيتم إعادة تشغيل التطبيق؟</string>
     <string-array name="languages">
-        <item>الإنجليزية</item>
+        <item>English</item>
         <item>العربية</item>
     </string-array>
     <string-array name="themes">
-        <item>وضع النظام</item>
+        <item>وضع النظام الافتراضي</item>
         <item>وضع النهار</item>
         <item>وضع الداكن</item>
     </string-array>

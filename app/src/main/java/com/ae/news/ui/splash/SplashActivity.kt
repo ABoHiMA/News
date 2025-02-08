@@ -10,10 +10,12 @@ import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.ae.news.R
 import com.ae.news.ui.home.HomeActivity
+import com.ae.news.utils.Utils.initApp
 
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        initApp(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
