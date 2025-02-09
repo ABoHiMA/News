@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primary_color"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/btn_home"
+        style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="18dp"
+        android:gravity="start|center_vertical"
+        android:text="@string/menu_home"
+        android:textColor="@color/on_primary_color"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:icon="@drawable/ic_home"
+        app:iconPadding="18dp"
+        app:iconSize="24dp"
+        app:iconTint="@color/on_primary_color"
+        app:strokeColor="@color/on_primary_color"
+        app:strokeWidth="3dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="18dp"
+        android:layout_marginVertical="6dp"
+        android:background="@color/on_primary_color" />
+
+    <TextView
+        style="@style/txt_drawer"
+        android:text="@string/theme"
+        app:drawableStartCompat="@drawable/ic_theme" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layout_theme"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="18dp"
+        android:layout_marginBottom="18dp"
+        app:boxCornerRadiusBottomEnd="13dp"
+        app:boxCornerRadiusBottomStart="13dp"
+        app:boxCornerRadiusTopEnd="13dp"
+        app:boxCornerRadiusTopStart="13dp"
+        app:boxStrokeColor="@color/color_dropdown"
+        app:boxStrokeWidth="3dp"
+        app:endIconTint="@color/on_primary_color">
+
+        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+            android:id="@+id/dropdown_theme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none"
+            android:textColor="@color/on_primary_color"
+            app:dropDownBackgroundTint="@color/primary_color"
+            app:simpleItemLayout="@layout/item_dropdown"
+            app:simpleItems="@array/themes" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="18dp"
+        android:layout_marginVertical="6dp"
+        android:background="@color/on_primary_color" />
+
+    <TextView
+        style="@style/txt_drawer"
+        android:text="@string/language"
+        app:drawableStartCompat="@drawable/ic_lang" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layout_language"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="18dp"
+        app:boxCornerRadiusBottomEnd="13dp"
+        app:boxCornerRadiusBottomStart="13dp"
+        app:boxCornerRadiusTopEnd="13dp"
+        app:boxCornerRadiusTopStart="13dp"
+        app:boxStrokeColor="@color/color_dropdown"
+        app:boxStrokeWidth="3dp"
+        app:endIconTint="@color/on_primary_color">
+
+        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+            android:id="@+id/dropdown_language"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none"
+            android:textColor="@color/on_primary_color"
+            app:dropDownBackgroundTint="@color/primary_color"
+            app:simpleItemLayout="@layout/item_dropdown"
+            app:simpleItems="@array/languages" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+</LinearLayout>

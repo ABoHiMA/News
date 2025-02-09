@@ -1,4 +1,36 @@
 <resources>
     <string name="app_name">News</string>
-
+    <string name="news">News</string>
+    <string name="please_wait">Please Wait…</string>
+    <string name="try_again">Try again</string>
+    <string name="view_full_article">View Full Article</string>
+    <string name="good_day">Good Day,\nHere is some News for you</string>
+    <string name="view_all">View All</string>
+    <string name="menu_home">Go To Home</string>
+    <string name="general">General</string>
+    <string name="business">Business</string>
+    <string name="sports">Sports</string>
+    <string name="technology">Technology</string>
+    <string name="science">Science</string>
+    <string name="entertainment">Entertainment</string>
+    <string name="health">Health</string>
+    <string name="home">Home</string>
+    <string name="search">Search</string>
+    <string name="stay_informed">Stay informed with just a tap!\n Search the latest news now.</string>
+    <string name="language">Language</string>
+    <string name="theme">Theme</string>
+    <string name="alert">Alert</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
+    <string name="change_theme">To change the theme will the application be restarted?</string>
+    <string name="change_language">To change the language will the application be restarted?</string>
+    <string-array name="languages">
+        <item>English</item>
+        <item>العربية</item>
+    </string-array>
+    <string-array name="themes">
+        <item>System Default</item>
+        <item>Light Mode</item>
+        <item>Dark Mode</item>
+    </string-array>
 </resources>
