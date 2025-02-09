@@ -22,6 +22,14 @@ import com.ae.news.utils.Utils.sharedPreferences
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var viewBinding: ActivityHomeBinding
+    private lateinit var themeItems: Array<String>
+    private lateinit var languageItems: Array<String>
+    private lateinit var themeAdapter: ArrayAdapter<String>
+    private lateinit var languageAdapter: ArrayAdapter<String>
+    private lateinit var currentTheme: String
+    private lateinit var currentLanguage: String
+    private var themePos: Int = 0
+    private var languagePos: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         initApp(this)
@@ -32,6 +40,7 @@ class HomeActivity : AppCompatActivity() {
         setContentView(viewBinding.root)
 
         initAppBar()
+        initDropDowns()
         startCategoryFragment()
     }
 
@@ -42,39 +51,40 @@ class HomeActivity : AppCompatActivity() {
         }
 
         viewBinding.appBarHome.toolBar.setNavigationOnClickListener {
-            initDrawer()
             viewBinding.drawerLayout.open()
         }
 
-        viewBinding.btnHome.setOnClickListener {
+        viewBinding.navBody.btnHome.setOnClickListener {
             startCategoryFragment()
             viewBinding.drawerLayout.close()
         }
-
     }
 
-    private fun initDrawer() {
-        val themeItems = resources.getStringArray(R.array.themes)
-        val languageItems = resources.getStringArray(R.array.languages)
+    private fun initDropDowns() {
+        themeItems = resources.getStringArray(R.array.themes)
+        languageItems = resources.getStringArray(R.array.languages)
 
-        val themePos = sharedPreferences?.getInt(Utils.SAVED_MODE_POS, 0) ?: 0
-        val languagePos = sharedPreferences?.getInt(Utils.SAVED_LANG_POS, 0) ?: 0
+        themePos = sharedPreferences?.getInt(Utils.SAVED_MODE_POS, 0) ?: 0
+        languagePos = sharedPreferences?.getInt(Utils.SAVED_LANG_POS, 0) ?: 0
 
-        var currentTheme = themeItems[themePos]
-        var currentLanguage = languageItems[languagePos]
+        currentTheme = themeItems[themePos]
+        currentLanguage = languageItems[languagePos]
 
-        val themeAdapter =
+        themeAdapter =
             ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, themeItems)
-        val languageAdapter =
+        languageAdapter =
             ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, languageItems)
 
-        viewBinding.dropdownTheme.setAdapter(themeAdapter)
-        viewBinding.dropdownLanguage.setAdapter(languageAdapter)
+        initThemeDropDown()
+        initLanguageDropDown()
+    }
 
-        viewBinding.dropdownTheme.setText(currentTheme, false)
-        viewBinding.dropdownLanguage.setText(currentLanguage, false)
+    private fun initThemeDropDown() {
+        viewBinding.navBody.dropdownTheme.setAdapter(themeAdapter)
 
-        viewBinding.dropdownTheme.setOnItemClickListener { _, _, position, _ ->
+        viewBinding.navBody.dropdownTheme.setText(currentTheme, false)
+
+        viewBinding.navBody.dropdownTheme.setOnItemClickListener { _, _, position, _ ->
             val newTheme = when (position) {
                 0 -> themeItems[0]
                 1 -> themeItems[1]
@@ -84,60 +94,71 @@ class HomeActivity : AppCompatActivity() {
             if (themePos != position) {
                 val modeFlag = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
                 val isDarkModeOn = modeFlag == Configuration.UI_MODE_NIGHT_YES
-                if ((position == 0 && isDarkModeOn && getDeviceTheme(this) == 1) || (position == 0 && !isDarkModeOn && getDeviceTheme(
-                        this
-                    ) == 2) || (position == 1 && isDarkModeOn) || (position == 2 && (!isDarkModeOn))
+                if ((position == 0 && isDarkModeOn && getDeviceTheme(this) == 1) ||
+                    (position == 0 && !isDarkModeOn && getDeviceTheme(this) == 2) ||
+                    (position == 1 && isDarkModeOn) || (position == 2 && (!isDarkModeOn))
                 ) {
-                    alertDialog(this, getString(R.string.change_theme), {
-                        currentTheme = newTheme
-                        setMode(position)
-                        sharedPreferences?.edit()?.putInt(Utils.SAVED_MODE_POS, position)?.apply()
-
-                        finish()
-                        startActivity(intent)
-                    }, {
-                        viewBinding.dropdownTheme.setText(currentTheme, false)
-                    }).show()
+                    applyAppTheme(position, newTheme)
                 } else {
                     currentTheme = newTheme
-                    viewBinding.dropdownTheme.setText(currentTheme, false)
+                    viewBinding.navBody.dropdownTheme.setText(currentTheme, false)
                     sharedPreferences?.edit()?.putInt(Utils.SAVED_MODE_POS, position)?.apply()
                 }
             }
         }
+    }
 
-        viewBinding.dropdownLanguage.setOnItemClickListener { _, _, position, _ ->
+    private fun applyAppTheme(position: Int, newTheme: String) {
+        alertDialog(this, getString(R.string.change_theme), {
+            currentTheme = newTheme
+            setMode(position)
+            sharedPreferences?.edit()?.putInt(Utils.SAVED_MODE_POS, position)?.apply()
+
+            finish()
+            startActivity(intent)
+        }, {
+            viewBinding.navBody.dropdownTheme.setText(currentTheme, false)
+        }).show()
+    }
+
+    private fun initLanguageDropDown() {
+        viewBinding.navBody.dropdownLanguage.setAdapter(languageAdapter)
+
+        viewBinding.navBody.dropdownLanguage.setText(currentLanguage, false)
+
+        viewBinding.navBody.dropdownLanguage.setOnItemClickListener { _, _, position, _ ->
             val newLanguage = when (position) {
                 0 -> languageItems[0]
                 1 -> languageItems[1]
                 else -> languageItems[0]
             }
-            if (languagePos != position) {
-                alertDialog(this, getString(R.string.change_language), {
-                    currentLanguage = newLanguage
-                    setLanguage(this, position)
-                    sharedPreferences?.edit()?.putInt(Utils.SAVED_LANG_POS, position)?.apply()
-
-                    finish()
-                    startActivity(intent)
-                }, {
-                    viewBinding.dropdownLanguage.setText(currentLanguage, false)
-                }).show()
-            }
+            if (languagePos != position) applyAppLanguage(position, newLanguage)
         }
     }
 
+    private fun applyAppLanguage(position: Int, newLanguage: String) {
+        alertDialog(this, getString(R.string.change_language), {
+            currentLanguage = newLanguage
+            setLanguage(this, position)
+            sharedPreferences?.edit()?.putInt(Utils.SAVED_LANG_POS, position)?.apply()
+
+            finish()
+            startActivity(intent)
+        }, {
+            viewBinding.navBody.dropdownLanguage.setText(currentLanguage, false)
+        }).show()
+    }
+
     private fun startCategoryFragment() {
-        supportFragmentManager.beginTransaction().setCustomAnimations(
-            R.anim.exit_to_left,
-            R.anim.enter_from_right,
-            R.anim.exit_to_right,
-            R.anim.enter_from_left,
-        ).replace(
-            R.id.fragment_container, CategoryFragment.getInstance(
-                onCategoryClickListener = ::onCategoryClick
-            )
-        ).commit()
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(
+                R.anim.enter_from_right,
+                R.anim.exit_to_left,
+            ).replace(
+                R.id.fragment_container, CategoryFragment.getInstance(
+                    onCategoryClickListener = ::onCategoryClick
+                )
+            ).commit()
     }
 
     private fun onCategoryClick(category: Category) {
@@ -146,14 +167,13 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun startNewsFragment(category: Category) {
-        supportFragmentManager.beginTransaction().setCustomAnimations(
-            R.anim.enter_from_right,
-            R.anim.exit_to_left,
-            R.anim.enter_from_left,
-            R.anim.exit_to_right,
-        ).replace(
-            R.id.fragment_container, NewsFragment.getInstance(category)
-        ).addToBackStack(null).commit()
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(
+                R.anim.enter_from_right,
+                R.anim.exit_to_left,
+            ).replace(
+                R.id.fragment_container, NewsFragment.getInstance(category)
+            ).addToBackStack(null).commit()
     }
 
 }
