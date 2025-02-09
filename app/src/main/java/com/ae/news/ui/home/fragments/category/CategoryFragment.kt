@@ -12,17 +12,24 @@ class CategoryFragment : Fragment() {
     private lateinit var viewBinding: FragmentCategoryBinding
     private lateinit var adapter: CategoryAdapter
     private var onCategoryClickListener: OnCategoryClickListener? = null
+    private var onEgyClickListener: OnEgyClickListener? = null
 
     fun interface OnCategoryClickListener {
         fun onCategoryClick(category: Category)
     }
 
+    fun interface OnEgyClickListener {
+        fun onEgyClick()
+    }
+
     companion object {
         fun getInstance(
-            onCategoryClickListener: OnCategoryClickListener
+            onCategoryClickListener: OnCategoryClickListener,
+            onEgyClickListener: OnEgyClickListener
         ): CategoryFragment {
             val fragment = CategoryFragment()
             fragment.onCategoryClickListener = onCategoryClickListener
+            fragment.onEgyClickListener = onEgyClickListener
             return fragment
         }
     }
@@ -43,12 +50,17 @@ class CategoryFragment : Fragment() {
 
     private fun initRecycler() {
         adapter = CategoryAdapter(
-            onClick = ::onCategoryClick
+            onClick = ::onCategoryClick,
+            onEgyClick = ::onEgyClick,
         )
         viewBinding.rvCat.adapter = adapter
     }
 
     private fun onCategoryClick(category: Category) {
         onCategoryClickListener?.onCategoryClick(category)
+    }
+
+    private fun onEgyClick() {
+        onEgyClickListener?.onEgyClick()
     }
 }

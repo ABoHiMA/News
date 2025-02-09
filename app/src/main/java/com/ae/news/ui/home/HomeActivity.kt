@@ -10,6 +10,7 @@ import com.ae.news.R
 import com.ae.news.databinding.ActivityHomeBinding
 import com.ae.news.models.categories.Category
 import com.ae.news.ui.home.fragments.category.CategoryFragment
+import com.ae.news.ui.home.fragments.egypt.EgyptNewsFragment
 import com.ae.news.ui.home.fragments.news.NewsFragment
 import com.ae.news.ui.search.SearchActivity
 import com.ae.news.utils.Utils
@@ -156,7 +157,8 @@ class HomeActivity : AppCompatActivity() {
                 R.anim.exit_to_left,
             ).replace(
                 R.id.fragment_container, CategoryFragment.getInstance(
-                    onCategoryClickListener = ::onCategoryClick
+                    onCategoryClickListener = ::onCategoryClick,
+                    onEgyClickListener = ::onEgyClick
                 )
             ).commit()
     }
@@ -166,6 +168,11 @@ class HomeActivity : AppCompatActivity() {
         viewBinding.appBarHome.tbTitle.setText(category.title)
     }
 
+    private fun onEgyClick() {
+        startEgyFragment()
+        viewBinding.appBarHome.tbTitle.setText(R.string.menu_egy)
+    }
+
     private fun startNewsFragment(category: Category) {
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(
@@ -173,6 +180,16 @@ class HomeActivity : AppCompatActivity() {
                 R.anim.exit_to_left,
             ).replace(
                 R.id.fragment_container, NewsFragment.getInstance(category)
+            ).addToBackStack(null).commit()
+    }
+
+    private fun startEgyFragment() {
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(
+                R.anim.enter_from_right,
+                R.anim.exit_to_left,
+            ).replace(
+                R.id.fragment_container, EgyptNewsFragment()
             ).addToBackStack(null).commit()
     }
 

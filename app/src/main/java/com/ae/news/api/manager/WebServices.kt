@@ -15,5 +15,4 @@ interface WebServices {
 
     @GET("v2/everything")
     fun getSearchedNews(@Query("q") query: String): Call<NewsResponse>
-
 }

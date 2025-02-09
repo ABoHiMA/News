@@ -48,6 +48,11 @@ data class Category(
                 title = R.string.health,
                 image = R.drawable.ic_health,
             ),
+            Category(
+                id = "",
+                title = R.string.menu_egy,
+                image = R.drawable.ic_egy,
+            ),
         )
     }
 }

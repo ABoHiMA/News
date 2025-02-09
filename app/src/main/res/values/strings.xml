@@ -22,6 +22,8 @@
     <string name="alert">Alert</string>
     <string name="ok">Ok</string>
     <string name="cancel">Cancel</string>
+    <string name="menu_egy">Egypt News</string>
+    <string name="egy">Egypt</string>
     <string name="change_theme">To change the theme will the application be restarted?</string>
     <string name="change_language">To change the language will the application be restarted?</string>
     <string-array name="languages">
