@@ -25,6 +25,7 @@
     <string name="cancel">إالغاء</string>
     <string name="menu_egy">اخبار مصر</string>
     <string name="egy">مصر</string>
+    <string name="wrong">حدث خطأ ما</string>
     <string name="change_theme">لتغيير الثيم سيتم إعادة تشغيل التطبيق؟</string>
     <string name="change_language">لتغيير اللغة سيتم إعادة تشغيل التطبيق؟</string>
     <string-array name="languages">

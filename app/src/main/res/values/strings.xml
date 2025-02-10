@@ -26,6 +26,7 @@
     <string name="egy">Egypt</string>
     <string name="change_theme">To change the theme will the application be restarted?</string>
     <string name="change_language">To change the language will the application be restarted?</string>
+    <string name="wrong">Something went wrong</string>
     <string-array name="languages">
         <item>English</item>
         <item>العربية</item>

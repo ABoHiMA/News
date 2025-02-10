@@ -22,7 +22,7 @@ import com.ae.news.utils.Utils.setMode
 import com.ae.news.utils.Utils.sharedPreferences
 
 class HomeActivity : AppCompatActivity() {
-    private lateinit var viewBinding: ActivityHomeBinding
+    private lateinit var binding: ActivityHomeBinding
     private lateinit var themeItems: Array<String>
     private lateinit var languageItems: Array<String>
     private lateinit var themeAdapter: ArrayAdapter<String>
@@ -37,8 +37,8 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        viewBinding = ActivityHomeBinding.inflate(layoutInflater)
-        setContentView(viewBinding.root)
+        binding = ActivityHomeBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         initAppBar()
         initDropDowns()
@@ -46,18 +46,18 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun initAppBar() {
-        viewBinding.appBarHome.btnSearch.setOnClickListener {
+        binding.appBarHome.btnSearch.setOnClickListener {
             val intent = Intent(this, SearchActivity()::class.java)
             startActivity(intent)
         }
 
-        viewBinding.appBarHome.toolBar.setNavigationOnClickListener {
-            viewBinding.drawerLayout.open()
+        binding.appBarHome.toolBar.setNavigationOnClickListener {
+            binding.drawerLayout.open()
         }
 
-        viewBinding.navBody.btnHome.setOnClickListener {
+        binding.navBody.btnHome.setOnClickListener {
             startCategoryFragment()
-            viewBinding.drawerLayout.close()
+            binding.drawerLayout.close()
         }
     }
 
@@ -81,11 +81,11 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun initThemeDropDown() {
-        viewBinding.navBody.dropdownTheme.setAdapter(themeAdapter)
+        binding.navBody.dropdownTheme.setAdapter(themeAdapter)
 
-        viewBinding.navBody.dropdownTheme.setText(currentTheme, false)
+        binding.navBody.dropdownTheme.setText(currentTheme, false)
 
-        viewBinding.navBody.dropdownTheme.setOnItemClickListener { _, _, position, _ ->
+        binding.navBody.dropdownTheme.setOnItemClickListener { _, _, position, _ ->
             val newTheme = when (position) {
                 0 -> themeItems[0]
                 1 -> themeItems[1]
@@ -102,7 +102,7 @@ class HomeActivity : AppCompatActivity() {
                     applyAppTheme(position, newTheme)
                 } else {
                     currentTheme = newTheme
-                    viewBinding.navBody.dropdownTheme.setText(currentTheme, false)
+                    binding.navBody.dropdownTheme.setText(currentTheme, false)
                     sharedPreferences?.edit()?.putInt(Utils.SAVED_MODE_POS, position)?.apply()
                 }
             }
@@ -118,16 +118,16 @@ class HomeActivity : AppCompatActivity() {
             finish()
             startActivity(intent)
         }, {
-            viewBinding.navBody.dropdownTheme.setText(currentTheme, false)
+            binding.navBody.dropdownTheme.setText(currentTheme, false)
         }).show()
     }
 
     private fun initLanguageDropDown() {
-        viewBinding.navBody.dropdownLanguage.setAdapter(languageAdapter)
+        binding.navBody.dropdownLanguage.setAdapter(languageAdapter)
 
-        viewBinding.navBody.dropdownLanguage.setText(currentLanguage, false)
+        binding.navBody.dropdownLanguage.setText(currentLanguage, false)
 
-        viewBinding.navBody.dropdownLanguage.setOnItemClickListener { _, _, position, _ ->
+        binding.navBody.dropdownLanguage.setOnItemClickListener { _, _, position, _ ->
             val newLanguage = when (position) {
                 0 -> languageItems[0]
                 1 -> languageItems[1]
@@ -146,7 +146,7 @@ class HomeActivity : AppCompatActivity() {
             finish()
             startActivity(intent)
         }, {
-            viewBinding.navBody.dropdownLanguage.setText(currentLanguage, false)
+            binding.navBody.dropdownLanguage.setText(currentLanguage, false)
         }).show()
     }
 
@@ -165,12 +165,12 @@ class HomeActivity : AppCompatActivity() {
 
     private fun onCategoryClick(category: Category) {
         startNewsFragment(category)
-        viewBinding.appBarHome.tbTitle.setText(category.title)
+        binding.appBarHome.tbTitle.setText(category.title)
     }
 
     private fun onEgyClick() {
         startEgyFragment()
-        viewBinding.appBarHome.tbTitle.setText(R.string.menu_egy)
+        binding.appBarHome.tbTitle.setText(R.string.menu_egy)
     }
 
     private fun startNewsFragment(category: Category) {

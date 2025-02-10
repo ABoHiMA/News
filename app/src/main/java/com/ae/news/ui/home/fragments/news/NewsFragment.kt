@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import com.ae.news.R
 import com.ae.news.api.manager.ApiManager
 import com.ae.news.databinding.FragmentNewsBinding
 import com.ae.news.models.categories.Category
@@ -23,7 +24,8 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class NewsFragment : Fragment() {
-    private lateinit var viewBinding: FragmentNewsBinding
+    private var _binding: FragmentNewsBinding? = null
+    private val binding get() = _binding!!
     private var adapter = NewsAdapter()
     private var category: Category? = null
 
@@ -38,8 +40,8 @@ class NewsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        viewBinding = FragmentNewsBinding.inflate(inflater, container, false)
-        return viewBinding.root
+        _binding = FragmentNewsBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -49,7 +51,7 @@ class NewsFragment : Fragment() {
     }
 
     private fun initRecycler() {
-        viewBinding.rvNews.adapter = adapter
+        binding.rvNews.adapter = adapter
     }
 
     private fun loadSources() {
@@ -59,7 +61,7 @@ class NewsFragment : Fragment() {
 
                 override fun onFailure(response: Call<SourcesResponse>, error: Throwable) {
                     showErrorView(
-                        error.localizedMessage ?: "Something went wrong"
+                        error.localizedMessage ?: getString(R.string.wrong)
                     ) { loadSources() }
                 }
 
@@ -70,7 +72,7 @@ class NewsFragment : Fragment() {
                         val errorResponse = Gson().fromJson(
                             response.errorBody()?.string(), ErrorResponse::class.java
                         )
-                        val message = errorResponse.message ?: "Something went wrong"
+                        val message = errorResponse.message ?: getString(R.string.wrong)
                         showErrorView(message) { loadSources() }
                         return
                     }
@@ -82,12 +84,12 @@ class NewsFragment : Fragment() {
 
     private fun bindTabsView(sources: List<Source?>?) {
         sources?.forEach { source ->
-            val tab = viewBinding.tabsSources.newTab()
+            val tab = binding.tabsSources.newTab()
             tab.text = source?.name
             tab.tag = source
-            viewBinding.tabsSources.addTab(tab)
+            binding.tabsSources.addTab(tab)
         }
-        viewBinding.tabsSources.addOnTabSelectedListener(object : OnTabSelectedListener {
+        binding.tabsSources.addOnTabSelectedListener(object : OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 val source = tab?.tag as Source
                 source.id?.let { loadNews(it) }
@@ -100,7 +102,7 @@ class NewsFragment : Fragment() {
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
         })
-        viewBinding.tabsSources.getTabAt(0)?.select()
+        binding.tabsSources.getTabAt(0)?.select()
     }
 
     private fun loadNews(sourceId: String) {
@@ -109,7 +111,7 @@ class NewsFragment : Fragment() {
 
             override fun onFailure(response: Call<NewsResponse>, error: Throwable) {
                 showErrorView(
-                    error.localizedMessage ?: "Something went wrong"
+                    error.localizedMessage ?: getString(R.string.wrong)
                 ) { loadNews(sourceId) }
             }
 
@@ -120,7 +122,7 @@ class NewsFragment : Fragment() {
                     val errorResponse = Gson().fromJson(
                         response.errorBody()?.string(), ErrorResponse::class.java
                     )
-                    val message = errorResponse.message ?: "Something went wrong"
+                    val message = errorResponse.message ?: getString(R.string.wrong)
                     showErrorView(message) { loadNews(sourceId) }
                     return
                 }
@@ -140,21 +142,26 @@ class NewsFragment : Fragment() {
     }
 
     private fun showLoadingView() {
-        viewBinding.loading.isVisible = true
-        viewBinding.error.isVisible = false
+        binding.loading.isVisible = true
+        binding.error.isVisible = false
     }
 
     private fun showSuccessView() {
-        viewBinding.loading.isVisible = false
-        viewBinding.error.isVisible = false
+        binding.loading.isVisible = false
+        binding.error.isVisible = false
     }
 
     private fun showErrorView(errorText: String?, onTryAgainClick: () -> Unit) {
-        viewBinding.loading.isVisible = false
-        viewBinding.error.isVisible = true
-        viewBinding.tvError.text = errorText
-        viewBinding.btnError.setOnClickListener {
+        binding.loading.isVisible = false
+        binding.error.isVisible = true
+        binding.tvError.text = errorText
+        binding.btnError.setOnClickListener {
             onTryAgainClick.invoke()
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

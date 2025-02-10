@@ -7,6 +7,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
+import com.ae.news.R
 import com.ae.news.api.manager.ApiManager
 import com.ae.news.databinding.ActivitySearchBinding
 import com.ae.news.models.errorResponse.ErrorResponse
@@ -20,30 +21,30 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class SearchActivity : AppCompatActivity() {
-    private lateinit var viewBinding: ActivitySearchBinding
+    private lateinit var binding: ActivitySearchBinding
     private val adapter = NewsAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewBinding = ActivitySearchBinding.inflate(layoutInflater)
-        setContentView(viewBinding.root)
+        binding = ActivitySearchBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         showEmptyView()
         initSearchView()
     }
 
     private fun initSearchView() {
-        viewBinding.rvSearch.adapter = adapter
+        binding.rvSearch.adapter = adapter
 
-        viewBinding.btnBack.setOnClickListener { finish() }
+        binding.btnBack.setOnClickListener { finish() }
 
-        viewBinding.etSearch.addTextChangedListener { text ->
+        binding.etSearch.addTextChangedListener { text ->
             if (text.toString().isBlank() || text.toString().isEmpty()) showEmptyView()
             else loadNews(text.toString())
         }
 
-        viewBinding.etSearch.setOnEditorActionListener { v, actionId, _ ->
+        binding.etSearch.setOnEditorActionListener { v, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 hideKeyboard(v)
                 return@setOnEditorActionListener true
@@ -63,7 +64,7 @@ class SearchActivity : AppCompatActivity() {
         ApiManager.webServices().getSearchedNews(query).enqueue(object : Callback<NewsResponse> {
             override fun onFailure(call: Call<NewsResponse>, error: Throwable) {
                 showErrorView(
-                    error.localizedMessage ?: "Something went wrong"
+                    error.localizedMessage ?: getString(R.string.wrong)
                 ) { loadNews(query) }
             }
 
@@ -74,7 +75,7 @@ class SearchActivity : AppCompatActivity() {
                     val errorResponse = Gson().fromJson(
                         response.errorBody()?.string(), ErrorResponse::class.java
                     )
-                    val message = errorResponse.message ?: "Something went wrong"
+                    val message = errorResponse.message ?: getString(R.string.wrong)
                     showErrorView(message) { loadNews(query) }
                     return
                 }
@@ -95,29 +96,29 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun showLoadingView() {
-        viewBinding.loading.isVisible = true
-        viewBinding.empty.isVisible = false
-        viewBinding.error.isVisible = false
+        binding.loading.isVisible = true
+        binding.empty.isVisible = false
+        binding.error.isVisible = false
     }
 
     private fun showEmptyView() {
-        viewBinding.empty.isVisible = true
-        viewBinding.loading.isVisible = false
-        viewBinding.error.isVisible = false
+        binding.empty.isVisible = true
+        binding.loading.isVisible = false
+        binding.error.isVisible = false
     }
 
     private fun showSuccessView() {
-        viewBinding.loading.isVisible = false
-        viewBinding.empty.isVisible = false
-        viewBinding.error.isVisible = false
+        binding.loading.isVisible = false
+        binding.empty.isVisible = false
+        binding.error.isVisible = false
     }
 
     private fun showErrorView(errorText: String?, onTryAgainClick: () -> Unit) {
-        viewBinding.loading.isVisible = false
-        viewBinding.empty.isVisible = false
-        viewBinding.error.isVisible = true
-        viewBinding.tvError.text = errorText
-        viewBinding.btnError.setOnClickListener {
+        binding.loading.isVisible = false
+        binding.empty.isVisible = false
+        binding.error.isVisible = true
+        binding.tvError.text = errorText
+        binding.btnError.setOnClickListener {
             onTryAgainClick.invoke()
         }
     }

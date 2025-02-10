@@ -22,9 +22,9 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.ViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val viewBinding =
+        val binding =
             ItemNewsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(viewBinding)
+        return ViewHolder(binding)
     }
 
     override fun getItemCount(): Int = newsList?.size ?: 0

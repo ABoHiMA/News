@@ -20,16 +20,15 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class EgyptNewsFragment : Fragment() {
-    private lateinit var viewBinding: FragmentEgyptNewsBinding
+    private var _binding: FragmentEgyptNewsBinding? = null
+    private val binding get() = _binding!!
     private val adapter = NewsAdapter()
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        viewBinding = FragmentEgyptNewsBinding.inflate(inflater, container, false)
-        return viewBinding.root
+        _binding = FragmentEgyptNewsBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -38,7 +37,7 @@ class EgyptNewsFragment : Fragment() {
     }
 
     private fun initEgyptView() {
-        viewBinding.rvEgy.adapter = adapter
+        binding.rvEgy.adapter = adapter
 
         loadEgyptNews()
     }
@@ -49,7 +48,7 @@ class EgyptNewsFragment : Fragment() {
             .enqueue(object : Callback<NewsResponse> {
                 override fun onFailure(call: Call<NewsResponse>, error: Throwable) {
                     showErrorView(
-                        error.localizedMessage ?: "Something went wrong"
+                        error.localizedMessage ?: getString(R.string.wrong)
                     ) { loadEgyptNews() }
                 }
 
@@ -60,7 +59,7 @@ class EgyptNewsFragment : Fragment() {
                         val errorResponse = Gson().fromJson(
                             response.errorBody()?.string(), ErrorResponse::class.java
                         )
-                        val message = errorResponse.message ?: "Something went wrong"
+                        val message = errorResponse.message ?: getString(R.string.wrong)
                         showErrorView(message) { loadEgyptNews() }
                         return
                     }
@@ -81,21 +80,26 @@ class EgyptNewsFragment : Fragment() {
     }
 
     private fun showLoadingView() {
-        viewBinding.loading.isVisible = true
-        viewBinding.error.isVisible = false
+        binding.loading.isVisible = true
+        binding.error.isVisible = false
     }
 
     private fun showSuccessView() {
-        viewBinding.loading.isVisible = false
-        viewBinding.error.isVisible = false
+        binding.loading.isVisible = false
+        binding.error.isVisible = false
     }
 
     private fun showErrorView(errorText: String?, onTryAgainClick: () -> Unit) {
-        viewBinding.loading.isVisible = false
-        viewBinding.error.isVisible = true
-        viewBinding.tvError.text = errorText
-        viewBinding.btnError.setOnClickListener {
+        binding.loading.isVisible = false
+        binding.error.isVisible = true
+        binding.tvError.text = errorText
+        binding.btnError.setOnClickListener {
             onTryAgainClick.invoke()
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

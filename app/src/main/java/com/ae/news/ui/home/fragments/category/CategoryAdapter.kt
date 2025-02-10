@@ -14,9 +14,9 @@ class CategoryAdapter(
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val viewBinding =
+        val binding =
             ItemCategoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(viewBinding)
+        return ViewHolder(binding)
     }
 
     override fun getItemCount(): Int = categories.size

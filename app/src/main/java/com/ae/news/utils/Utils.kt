@@ -16,6 +16,8 @@ object Utils {
     var sharedPreferences: SharedPreferences? = null
     const val SAVED_MODE_POS = "SAVED_MODE_POS"
     const val SAVED_LANG_POS = "SAVED_LANG_POS"
+    const val URL = "URL"
+    const val GOOGLE = "https://www.google.com"
 
     fun alertDialog(
         context: Context, message: String, onAccept: () -> Unit, onDecline: () -> Unit
