@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.widget.ArrayAdapter
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import com.ae.news.R
 import com.ae.news.databinding.ActivityHomeBinding
 import com.ae.news.models.categories.Category
@@ -29,6 +31,7 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var languageAdapter: ArrayAdapter<String>
     private lateinit var currentTheme: String
     private lateinit var currentLanguage: String
+    private var appBarTitle: String? = null
     private var themePos: Int = 0
     private var languagePos: Int = 0
 
@@ -59,6 +62,29 @@ class HomeActivity : AppCompatActivity() {
             startCategoryFragment()
             binding.drawerLayout.close()
         }
+
+        changeAppBarTitle()
+    }
+
+    private fun changeAppBarTitle() {
+        supportFragmentManager.registerFragmentLifecycleCallbacks(object :
+            FragmentManager.FragmentLifecycleCallbacks() {
+            override fun onFragmentResumed(fm: FragmentManager, frag: Fragment) {
+                super.onFragmentResumed(fm, frag)
+
+                when (frag) {
+                    is CategoryFragment -> binding.appBarHome.tbTitle.setText(R.string.home)
+
+                    is NewsFragment -> binding.appBarHome.tbTitle.text =
+                        appBarTitle ?: getString(R.string.home)
+
+                    is EgyptNewsFragment -> binding.appBarHome.tbTitle.text =
+                        appBarTitle ?: getString(R.string.home)
+
+                    else -> binding.appBarHome.tbTitle.setText(R.string.home)
+                }
+            }
+        }, false)
     }
 
     private fun initDropDowns() {
@@ -156,18 +182,18 @@ class HomeActivity : AppCompatActivity() {
         ).replace(
             R.id.fragment_container, CategoryFragment.getInstance(
                 onCategoryClickListener = ::onCategoryClick, onEgyClickListener = ::onEgyClick
-            )
+            ), "Category"
         ).commit()
-
-        binding.appBarHome.tbTitle.setText(R.string.home)
     }
 
     private fun onCategoryClick(category: Category) {
         startNewsFragment(category)
+        appBarTitle = getString(category.title)
     }
 
     private fun onEgyClick() {
         startEgyFragment()
+        appBarTitle = getString(R.string.menu_egy)
     }
 
     private fun startNewsFragment(category: Category) {
@@ -175,10 +201,8 @@ class HomeActivity : AppCompatActivity() {
             R.anim.enter_from_right,
             R.anim.exit_to_left,
         ).replace(
-            R.id.fragment_container, NewsFragment.getInstance(category)
+            R.id.fragment_container, NewsFragment.getInstance(category), "News"
         ).addToBackStack(null).commit()
-
-        binding.appBarHome.tbTitle.setText(category.title)
     }
 
     private fun startEgyFragment() {
@@ -186,10 +210,7 @@ class HomeActivity : AppCompatActivity() {
             R.anim.enter_from_right,
             R.anim.exit_to_left,
         ).replace(
-            R.id.fragment_container, EgyptNewsFragment()
+            R.id.fragment_container, EgyptNewsFragment(), "Egy"
         ).addToBackStack(null).commit()
-
-        binding.appBarHome.tbTitle.setText(R.string.menu_egy)
     }
-
 }
