@@ -9,31 +9,36 @@ import com.ae.news.databinding.FragmentCategoryBinding
 import com.ae.news.models.categories.Category
 
 class CategoryFragment : Fragment() {
-    private lateinit var viewBinding: FragmentCategoryBinding
+    private var _binding: FragmentCategoryBinding? = null
+    private val binding get() = _binding!!
     private lateinit var adapter: CategoryAdapter
     private var onCategoryClickListener: OnCategoryClickListener? = null
+    private var onEgyClickListener: OnEgyClickListener? = null
 
     fun interface OnCategoryClickListener {
         fun onCategoryClick(category: Category)
     }
 
+    fun interface OnEgyClickListener {
+        fun onEgyClick()
+    }
+
     companion object {
         fun getInstance(
-            onCategoryClickListener: OnCategoryClickListener
+            onCategoryClickListener: OnCategoryClickListener, onEgyClickListener: OnEgyClickListener
         ): CategoryFragment {
             val fragment = CategoryFragment()
             fragment.onCategoryClickListener = onCategoryClickListener
+            fragment.onEgyClickListener = onEgyClickListener
             return fragment
         }
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        viewBinding = FragmentCategoryBinding.inflate(inflater, container, false)
-        return viewBinding.root
+        _binding = FragmentCategoryBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -43,12 +48,22 @@ class CategoryFragment : Fragment() {
 
     private fun initRecycler() {
         adapter = CategoryAdapter(
-            onClick = ::onCategoryClick
+            onClick = ::onCategoryClick,
+            onEgyClick = ::onEgyClick,
         )
-        viewBinding.rvCat.adapter = adapter
+        binding.rvCat.adapter = adapter
     }
 
     private fun onCategoryClick(category: Category) {
         onCategoryClickListener?.onCategoryClick(category)
+    }
+
+    private fun onEgyClick() {
+        onEgyClickListener?.onEgyClick()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

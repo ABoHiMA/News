@@ -4,10 +4,11 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.ae.news.databinding.ActivityWebViewBinding
+import com.ae.news.utils.Utils
 
 
 class WebViewActivity : AppCompatActivity() {
-    private lateinit var viewBinding: ActivityWebViewBinding
+    private lateinit var binding: ActivityWebViewBinding
     private lateinit var url: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,14 +18,14 @@ class WebViewActivity : AppCompatActivity() {
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun initWebView() {
-        viewBinding = ActivityWebViewBinding.inflate(layoutInflater)
-        setContentView(viewBinding.root)
+        binding = ActivityWebViewBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        url = intent.getStringExtra("url") ?: ""
+        url = intent.getStringExtra(Utils.URL) ?: Utils.GOOGLE
 
-        viewBinding.webView.settings.javaScriptEnabled = true
-        viewBinding.webView.loadUrl(url)
+        binding.webView.settings.javaScriptEnabled = true
+        binding.webView.loadUrl(url)
 
-        viewBinding.btnBack.setOnClickListener { finish() }
+        binding.btnBack.setOnClickListener { finish() }
     }
 }

@@ -7,23 +7,30 @@ import com.ae.news.databinding.ItemCategoryBinding
 import com.ae.news.models.categories.Category
 
 class CategoryAdapter(
-    val categories: List<Category> = Category.getCategories(),
+    private val categories: List<Category> = Category.getCategories(),
     val onClick: ((category: Category) -> Unit),
+    val onEgyClick: (() -> Unit),
 ) : RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val viewBinding =
+        val binding =
             ItemCategoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(viewBinding)
+        return ViewHolder(binding)
     }
 
     override fun getItemCount(): Int = categories.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindData(categories[position])
-        holder.itemBinding.btnCat.setOnClickListener {
-            onClick(categories[position])
+        if (position != categories.size - 1) {
+            holder.itemBinding.btnCat.setOnClickListener {
+                onClick(categories[position])
+            }
+        } else {
+            holder.itemBinding.btnCat.setOnClickListener {
+                onEgyClick()
+            }
         }
     }
 

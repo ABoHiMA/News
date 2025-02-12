@@ -9,11 +9,13 @@ import com.ae.news.R
 import com.ae.news.databinding.FragmentArticleSheetBinding
 import com.ae.news.models.newsResponse.News
 import com.ae.news.ui.web.WebViewActivity
+import com.ae.news.utils.Utils
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class ArticleFragmentSheet : BottomSheetDialogFragment() {
-    private lateinit var viewBinding: FragmentArticleSheetBinding
+    private var _binding: FragmentArticleSheetBinding? = null
+    private val binding get() = _binding!!
     private var article: News? = null
 
     companion object {
@@ -27,8 +29,8 @@ class ArticleFragmentSheet : BottomSheetDialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        viewBinding = FragmentArticleSheetBinding.inflate(inflater, container, false)
-        return viewBinding.root
+        _binding = FragmentArticleSheetBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -37,17 +39,21 @@ class ArticleFragmentSheet : BottomSheetDialogFragment() {
     }
 
     private fun initSheet() {
-        viewBinding.txtTitle.text = article?.description
+        binding.txtTitle.text = article?.description
 
-        Glide.with(viewBinding.root).load(article?.urlToImage).error(R.drawable.ic_launcher)
-            .into(viewBinding.imgNews)
+        Glide.with(binding.root).load(article?.urlToImage).error(R.drawable.ic_launcher)
+            .into(binding.imgNews)
 
-        viewBinding.btnViewFull.setOnClickListener {
+        binding.btnViewFull.setOnClickListener {
             val intent = Intent(requireContext(), WebViewActivity::class.java)
-            intent.putExtra("url", article?.url ?: "https://www.google.com")
+            intent.putExtra(Utils.URL, article?.url ?: Utils.GOOGLE)
             startActivity(intent)
             dismiss()
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

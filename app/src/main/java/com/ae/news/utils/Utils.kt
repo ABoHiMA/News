@@ -1,13 +1,9 @@
 package com.ae.news.utils
 
 import android.app.Activity
-import android.app.LocaleManager
 import android.content.Context
 import android.content.SharedPreferences
-import android.content.res.Configuration
 import android.graphics.drawable.ColorDrawable
-import android.os.Build
-import android.os.LocaleList
 import android.provider.Settings
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
@@ -20,6 +16,8 @@ object Utils {
     var sharedPreferences: SharedPreferences? = null
     const val SAVED_MODE_POS = "SAVED_MODE_POS"
     const val SAVED_LANG_POS = "SAVED_LANG_POS"
+    const val URL = "URL"
+    const val GOOGLE = "https://www.google.com"
 
     fun alertDialog(
         context: Context, message: String, onAccept: () -> Unit, onDecline: () -> Unit
@@ -58,17 +56,12 @@ object Utils {
         }
         val locale = Locale(lang)
         Locale.setDefault(locale)
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            val localeManager = activity.getSystemService(LocaleManager::class.java)
-            localeManager.applicationLocales = LocaleList.forLanguageTags(lang)
-        } else {
-            val config = Configuration(activity.resources.configuration)
-            config.setLocale(locale)
-            activity.createConfigurationContext(config)
-        }
+        val config = activity.resources.configuration
+        config.setLocale(locale)
+        activity.resources.updateConfiguration(
+            config, activity.resources.displayMetrics
+        )
     }
-
 
     fun getDeviceTheme(context: Context): Int {
         // hint: 1 = Light , 2 = Dark
@@ -96,5 +89,4 @@ object Utils {
         val currentTheme = sharedPreferences?.getInt(SAVED_MODE_POS, 0) ?: 0
         setMode(currentTheme)
     }
-
 }

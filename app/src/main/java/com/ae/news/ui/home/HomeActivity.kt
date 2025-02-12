@@ -10,6 +10,7 @@ import com.ae.news.R
 import com.ae.news.databinding.ActivityHomeBinding
 import com.ae.news.models.categories.Category
 import com.ae.news.ui.home.fragments.category.CategoryFragment
+import com.ae.news.ui.home.fragments.egypt.EgyptNewsFragment
 import com.ae.news.ui.home.fragments.news.NewsFragment
 import com.ae.news.ui.search.SearchActivity
 import com.ae.news.utils.Utils
@@ -21,7 +22,7 @@ import com.ae.news.utils.Utils.setMode
 import com.ae.news.utils.Utils.sharedPreferences
 
 class HomeActivity : AppCompatActivity() {
-    private lateinit var viewBinding: ActivityHomeBinding
+    private lateinit var binding: ActivityHomeBinding
     private lateinit var themeItems: Array<String>
     private lateinit var languageItems: Array<String>
     private lateinit var themeAdapter: ArrayAdapter<String>
@@ -36,8 +37,8 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        viewBinding = ActivityHomeBinding.inflate(layoutInflater)
-        setContentView(viewBinding.root)
+        binding = ActivityHomeBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         initAppBar()
         initDropDowns()
@@ -45,18 +46,18 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun initAppBar() {
-        viewBinding.appBarHome.btnSearch.setOnClickListener {
+        binding.appBarHome.btnSearch.setOnClickListener {
             val intent = Intent(this, SearchActivity()::class.java)
             startActivity(intent)
         }
 
-        viewBinding.appBarHome.toolBar.setNavigationOnClickListener {
-            viewBinding.drawerLayout.open()
+        binding.appBarHome.toolBar.setNavigationOnClickListener {
+            binding.drawerLayout.open()
         }
 
-        viewBinding.navBody.btnHome.setOnClickListener {
+        binding.navBody.btnHome.setOnClickListener {
             startCategoryFragment()
-            viewBinding.drawerLayout.close()
+            binding.drawerLayout.close()
         }
     }
 
@@ -70,8 +71,7 @@ class HomeActivity : AppCompatActivity() {
         currentTheme = themeItems[themePos]
         currentLanguage = languageItems[languagePos]
 
-        themeAdapter =
-            ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, themeItems)
+        themeAdapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, themeItems)
         languageAdapter =
             ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, languageItems)
 
@@ -80,11 +80,11 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun initThemeDropDown() {
-        viewBinding.navBody.dropdownTheme.setAdapter(themeAdapter)
+        binding.navBody.dropdownTheme.setAdapter(themeAdapter)
 
-        viewBinding.navBody.dropdownTheme.setText(currentTheme, false)
+        binding.navBody.dropdownTheme.setText(currentTheme, false)
 
-        viewBinding.navBody.dropdownTheme.setOnItemClickListener { _, _, position, _ ->
+        binding.navBody.dropdownTheme.setOnItemClickListener { _, _, position, _ ->
             val newTheme = when (position) {
                 0 -> themeItems[0]
                 1 -> themeItems[1]
@@ -94,14 +94,14 @@ class HomeActivity : AppCompatActivity() {
             if (themePos != position) {
                 val modeFlag = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
                 val isDarkModeOn = modeFlag == Configuration.UI_MODE_NIGHT_YES
-                if ((position == 0 && isDarkModeOn && getDeviceTheme(this) == 1) ||
-                    (position == 0 && !isDarkModeOn && getDeviceTheme(this) == 2) ||
-                    (position == 1 && isDarkModeOn) || (position == 2 && (!isDarkModeOn))
+                if ((position == 0 && isDarkModeOn && getDeviceTheme(this) == 1) || (position == 0 && !isDarkModeOn && getDeviceTheme(
+                        this
+                    ) == 2) || (position == 1 && isDarkModeOn) || (position == 2 && (!isDarkModeOn))
                 ) {
                     applyAppTheme(position, newTheme)
                 } else {
                     currentTheme = newTheme
-                    viewBinding.navBody.dropdownTheme.setText(currentTheme, false)
+                    binding.navBody.dropdownTheme.setText(currentTheme, false)
                     sharedPreferences?.edit()?.putInt(Utils.SAVED_MODE_POS, position)?.apply()
                 }
             }
@@ -117,16 +117,16 @@ class HomeActivity : AppCompatActivity() {
             finish()
             startActivity(intent)
         }, {
-            viewBinding.navBody.dropdownTheme.setText(currentTheme, false)
+            binding.navBody.dropdownTheme.setText(currentTheme, false)
         }).show()
     }
 
     private fun initLanguageDropDown() {
-        viewBinding.navBody.dropdownLanguage.setAdapter(languageAdapter)
+        binding.navBody.dropdownLanguage.setAdapter(languageAdapter)
 
-        viewBinding.navBody.dropdownLanguage.setText(currentLanguage, false)
+        binding.navBody.dropdownLanguage.setText(currentLanguage, false)
 
-        viewBinding.navBody.dropdownLanguage.setOnItemClickListener { _, _, position, _ ->
+        binding.navBody.dropdownLanguage.setOnItemClickListener { _, _, position, _ ->
             val newLanguage = when (position) {
                 0 -> languageItems[0]
                 1 -> languageItems[1]
@@ -145,35 +145,51 @@ class HomeActivity : AppCompatActivity() {
             finish()
             startActivity(intent)
         }, {
-            viewBinding.navBody.dropdownLanguage.setText(currentLanguage, false)
+            binding.navBody.dropdownLanguage.setText(currentLanguage, false)
         }).show()
     }
 
     private fun startCategoryFragment() {
-        supportFragmentManager.beginTransaction()
-            .setCustomAnimations(
-                R.anim.enter_from_right,
-                R.anim.exit_to_left,
-            ).replace(
-                R.id.fragment_container, CategoryFragment.getInstance(
-                    onCategoryClickListener = ::onCategoryClick
-                )
-            ).commit()
+        supportFragmentManager.beginTransaction().setCustomAnimations(
+            R.anim.enter_from_right,
+            R.anim.exit_to_left,
+        ).replace(
+            R.id.fragment_container, CategoryFragment.getInstance(
+                onCategoryClickListener = ::onCategoryClick, onEgyClickListener = ::onEgyClick
+            )
+        ).commit()
+
+        binding.appBarHome.tbTitle.setText(R.string.home)
     }
 
     private fun onCategoryClick(category: Category) {
         startNewsFragment(category)
-        viewBinding.appBarHome.tbTitle.setText(category.title)
+    }
+
+    private fun onEgyClick() {
+        startEgyFragment()
     }
 
     private fun startNewsFragment(category: Category) {
-        supportFragmentManager.beginTransaction()
-            .setCustomAnimations(
-                R.anim.enter_from_right,
-                R.anim.exit_to_left,
-            ).replace(
-                R.id.fragment_container, NewsFragment.getInstance(category)
-            ).addToBackStack(null).commit()
+        supportFragmentManager.beginTransaction().setCustomAnimations(
+            R.anim.enter_from_right,
+            R.anim.exit_to_left,
+        ).replace(
+            R.id.fragment_container, NewsFragment.getInstance(category)
+        ).addToBackStack(null).commit()
+
+        binding.appBarHome.tbTitle.setText(category.title)
+    }
+
+    private fun startEgyFragment() {
+        supportFragmentManager.beginTransaction().setCustomAnimations(
+            R.anim.enter_from_right,
+            R.anim.exit_to_left,
+        ).replace(
+            R.id.fragment_container, EgyptNewsFragment()
+        ).addToBackStack(null).commit()
+
+        binding.appBarHome.tbTitle.setText(R.string.menu_egy)
     }
 
 }
