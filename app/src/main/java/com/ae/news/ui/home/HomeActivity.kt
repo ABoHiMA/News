@@ -71,8 +71,7 @@ class HomeActivity : AppCompatActivity() {
         currentTheme = themeItems[themePos]
         currentLanguage = languageItems[languagePos]
 
-        themeAdapter =
-            ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, themeItems)
+        themeAdapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, themeItems)
         languageAdapter =
             ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, languageItems)
 
@@ -95,9 +94,9 @@ class HomeActivity : AppCompatActivity() {
             if (themePos != position) {
                 val modeFlag = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
                 val isDarkModeOn = modeFlag == Configuration.UI_MODE_NIGHT_YES
-                if ((position == 0 && isDarkModeOn && getDeviceTheme(this) == 1) ||
-                    (position == 0 && !isDarkModeOn && getDeviceTheme(this) == 2) ||
-                    (position == 1 && isDarkModeOn) || (position == 2 && (!isDarkModeOn))
+                if ((position == 0 && isDarkModeOn && getDeviceTheme(this) == 1) || (position == 0 && !isDarkModeOn && getDeviceTheme(
+                        this
+                    ) == 2) || (position == 1 && isDarkModeOn) || (position == 2 && (!isDarkModeOn))
                 ) {
                     applyAppTheme(position, newTheme)
                 } else {
@@ -151,46 +150,46 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun startCategoryFragment() {
-        supportFragmentManager.beginTransaction()
-            .setCustomAnimations(
-                R.anim.enter_from_right,
-                R.anim.exit_to_left,
-            ).replace(
-                R.id.fragment_container, CategoryFragment.getInstance(
-                    onCategoryClickListener = ::onCategoryClick,
-                    onEgyClickListener = ::onEgyClick
-                )
-            ).commit()
+        supportFragmentManager.beginTransaction().setCustomAnimations(
+            R.anim.enter_from_right,
+            R.anim.exit_to_left,
+        ).replace(
+            R.id.fragment_container, CategoryFragment.getInstance(
+                onCategoryClickListener = ::onCategoryClick, onEgyClickListener = ::onEgyClick
+            )
+        ).commit()
+
+        binding.appBarHome.tbTitle.setText(R.string.home)
     }
 
     private fun onCategoryClick(category: Category) {
         startNewsFragment(category)
-        binding.appBarHome.tbTitle.setText(category.title)
     }
 
     private fun onEgyClick() {
         startEgyFragment()
-        binding.appBarHome.tbTitle.setText(R.string.menu_egy)
     }
 
     private fun startNewsFragment(category: Category) {
-        supportFragmentManager.beginTransaction()
-            .setCustomAnimations(
-                R.anim.enter_from_right,
-                R.anim.exit_to_left,
-            ).replace(
-                R.id.fragment_container, NewsFragment.getInstance(category)
-            ).addToBackStack(null).commit()
+        supportFragmentManager.beginTransaction().setCustomAnimations(
+            R.anim.enter_from_right,
+            R.anim.exit_to_left,
+        ).replace(
+            R.id.fragment_container, NewsFragment.getInstance(category)
+        ).addToBackStack(null).commit()
+
+        binding.appBarHome.tbTitle.setText(category.title)
     }
 
     private fun startEgyFragment() {
-        supportFragmentManager.beginTransaction()
-            .setCustomAnimations(
-                R.anim.enter_from_right,
-                R.anim.exit_to_left,
-            ).replace(
-                R.id.fragment_container, EgyptNewsFragment()
-            ).addToBackStack(null).commit()
+        supportFragmentManager.beginTransaction().setCustomAnimations(
+            R.anim.enter_from_right,
+            R.anim.exit_to_left,
+        ).replace(
+            R.id.fragment_container, EgyptNewsFragment()
+        ).addToBackStack(null).commit()
+
+        binding.appBarHome.tbTitle.setText(R.string.menu_egy)
     }
 
 }
