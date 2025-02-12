@@ -26,6 +26,8 @@ import retrofit2.Response
 class NewsFragment : Fragment() {
     private var _binding: FragmentNewsBinding? = null
     private val binding get() = _binding!!
+    private var sourcesCall: Call<SourcesResponse>? = null
+    private var newsCall: Call<NewsResponse>? = null
     private var adapter = NewsAdapter()
     private var category: Category? = null
 
@@ -56,30 +58,31 @@ class NewsFragment : Fragment() {
 
     private fun loadSources() {
         showLoadingView()
-        ApiManager.webServices().getSources(category!!.id)
-            .enqueue(object : Callback<SourcesResponse> {
+        sourcesCall = ApiManager.webServices().getSources(category!!.id)
+        sourcesCall?.enqueue(object : Callback<SourcesResponse> {
 
-                override fun onFailure(response: Call<SourcesResponse>, error: Throwable) {
-                    showErrorView(
-                        error.localizedMessage ?: getString(R.string.wrong)
-                    ) { loadSources() }
-                }
+            override fun onFailure(response: Call<SourcesResponse>, error: Throwable) {
+                showErrorView(
+                    error.localizedMessage ?: getString(R.string.wrong)
+                ) { loadSources() }
+            }
 
-                override fun onResponse(
-                    call: Call<SourcesResponse>, response: Response<SourcesResponse>
-                ) {
-                    if (!response.isSuccessful) {
-                        val errorResponse = Gson().fromJson(
-                            response.errorBody()?.string(), ErrorResponse::class.java
-                        )
-                        val message = errorResponse.message ?: getString(R.string.wrong)
-                        showErrorView(message) { loadSources() }
-                        return
-                    }
-                    showSuccessView()
-                    bindTabsView(response.body()?.sources)
+            override fun onResponse(
+                call: Call<SourcesResponse>, response: Response<SourcesResponse>
+            ) {
+                if (!response.isSuccessful) {
+                    val errorResponse = Gson().fromJson(
+                        response.errorBody()?.string(), ErrorResponse::class.java
+                    )
+                    val message = errorResponse.message ?: getString(R.string.wrong)
+                    showErrorView(message) { loadSources() }
+                    return
                 }
-            })
+                if (_binding == null) return
+                showSuccessView()
+                bindTabsView(response.body()?.sources)
+            }
+        })
     }
 
     private fun bindTabsView(sources: List<Source?>?) {
@@ -107,7 +110,8 @@ class NewsFragment : Fragment() {
 
     private fun loadNews(sourceId: String) {
         showLoadingView()
-        ApiManager.webServices().getNews(sourceId).enqueue(object : Callback<NewsResponse> {
+        newsCall = ApiManager.webServices().getNews(sourceId)
+        newsCall?.enqueue(object : Callback<NewsResponse> {
 
             override fun onFailure(response: Call<NewsResponse>, error: Throwable) {
                 showErrorView(
@@ -126,6 +130,7 @@ class NewsFragment : Fragment() {
                     showErrorView(message) { loadNews(sourceId) }
                     return
                 }
+                if (_binding == null) return
                 showSuccessView()
                 bindNewsView(response.body()?.articles)
             }
@@ -162,6 +167,9 @@ class NewsFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+
         _binding = null
+        sourcesCall = null
+        newsCall = null
     }
 }
