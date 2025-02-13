@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.ae.news.databinding.ItemCategoryBinding
 import com.ae.news.models.categories.Category
+import java.util.Locale
 
 class CategoryAdapter(
     private val categories: List<Category> = Category.getCategories(),
@@ -37,9 +38,14 @@ class CategoryAdapter(
     inner class ViewHolder(val itemBinding: ItemCategoryBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
         fun bindData(category: Category) {
+            val lang = Locale.getDefault().language
+            if (lang.equals("ar")) {
+                itemBinding.imgCat.scaleX = -1f
+            } else {
+                itemBinding.imgCat.scaleX = 1f
+            }
             itemBinding.imgCat.setImageResource(category.image)
             itemBinding.txtCat.setText(category.title)
         }
     }
-
 }

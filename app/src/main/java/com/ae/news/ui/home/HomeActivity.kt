@@ -18,7 +18,6 @@ import com.ae.news.ui.search.SearchActivity
 import com.ae.news.utils.Utils
 import com.ae.news.utils.Utils.alertDialog
 import com.ae.news.utils.Utils.getDeviceTheme
-import com.ae.news.utils.Utils.initApp
 import com.ae.news.utils.Utils.setLanguage
 import com.ae.news.utils.Utils.setMode
 import com.ae.news.utils.Utils.sharedPreferences
@@ -36,7 +35,6 @@ class HomeActivity : AppCompatActivity() {
     private var languagePos: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        initApp(this)
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
@@ -165,7 +163,7 @@ class HomeActivity : AppCompatActivity() {
     private fun applyAppLanguage(position: Int, newLanguage: String) {
         alertDialog(this, getString(R.string.change_language), {
             currentLanguage = newLanguage
-            setLanguage(this, position)
+            setLanguage(position)
             sharedPreferences?.edit()?.putInt(Utils.SAVED_LANG_POS, position)?.apply()
 
             finish()
