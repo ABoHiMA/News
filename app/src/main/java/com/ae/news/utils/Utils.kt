@@ -76,10 +76,7 @@ object Utils {
         AppCompatDelegate.setDefaultNightMode(appTheme)
     }
 
-    fun restoreAppSettings() {
-        val currentLang = sharedPreferences?.getInt(SAVED_LANG_POS, 0) ?: 0
-        setLanguage(currentLang)
-
+    fun restoreAppTheme() {
         val currentTheme = sharedPreferences?.getInt(SAVED_MODE_POS, 0) ?: 0
         setMode(currentTheme)
     }

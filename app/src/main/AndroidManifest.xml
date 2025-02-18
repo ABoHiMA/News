@@ -15,11 +15,24 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.News"
         tools:targetApi="31">
+        <service
+            android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"
+            android:enabled="false"
+            android:exported="false">
+            <meta-data
+                android:name="autoStoreLocales"
+                android:value="true" />
+        </service>
+
         <activity
             android:name=".ui.search.SearchActivity"
             android:exported="false" />
         <activity
             android:name=".ui.web.WebViewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.home.HomeActivity"
+            android:configChanges="locale|layoutDirection"
             android:exported="false" />
         <activity
             android:name=".ui.splash.SplashActivity"
@@ -30,10 +43,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.home.HomeActivity"
-            android:configChanges="locale|layoutDirection"
-            android:exported="false" />
     </application>
 
 </manifest>

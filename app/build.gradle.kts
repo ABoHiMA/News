@@ -36,11 +36,12 @@ android {
     buildFeatures {
         viewBinding = true
     }
+    androidResources {
+        generateLocaleConfig = true
+    }
 }
 
 dependencies {
-
-
     implementation(libs.timeago)
     implementation(libs.glide)
     implementation(libs.logging.interceptor)
