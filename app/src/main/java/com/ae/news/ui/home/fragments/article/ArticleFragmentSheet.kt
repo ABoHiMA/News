@@ -6,10 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.ae.news.R
+import com.ae.news.common.Utils
 import com.ae.news.databinding.FragmentArticleSheetBinding
 import com.ae.news.models.newsResponse.News
 import com.ae.news.ui.web.WebViewActivity
-import com.ae.news.utils.Utils
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 

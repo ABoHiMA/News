@@ -9,18 +9,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.ae.news.R
+import com.ae.news.common.Utils
+import com.ae.news.common.Utils.alertDialog
+import com.ae.news.common.Utils.getDeviceTheme
+import com.ae.news.common.Utils.setLanguage
+import com.ae.news.common.Utils.setMode
+import com.ae.news.common.Utils.sharedPreferences
 import com.ae.news.databinding.ActivityHomeBinding
 import com.ae.news.models.categories.Category
 import com.ae.news.ui.home.fragments.category.CategoryFragment
 import com.ae.news.ui.home.fragments.egypt.EgyptNewsFragment
 import com.ae.news.ui.home.fragments.news.NewsFragment
 import com.ae.news.ui.search.SearchActivity
-import com.ae.news.utils.Utils
-import com.ae.news.utils.Utils.alertDialog
-import com.ae.news.utils.Utils.getDeviceTheme
-import com.ae.news.utils.Utils.setLanguage
-import com.ae.news.utils.Utils.setMode
-import com.ae.news.utils.Utils.sharedPreferences
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding

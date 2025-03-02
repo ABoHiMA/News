@@ -1,4 +1,4 @@
-package com.ae.news.utils
+package com.ae.news.common
 
 import android.content.Context
 import android.content.SharedPreferences

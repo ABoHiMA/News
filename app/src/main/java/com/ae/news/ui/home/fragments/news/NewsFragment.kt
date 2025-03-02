@@ -6,28 +6,20 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import com.ae.news.R
-import com.ae.news.api.manager.ApiManager
+import androidx.fragment.app.viewModels
+import com.ae.news.common.ErrorState
 import com.ae.news.databinding.FragmentNewsBinding
 import com.ae.news.models.categories.Category
-import com.ae.news.models.errorResponse.ErrorResponse
 import com.ae.news.models.newsResponse.News
-import com.ae.news.models.newsResponse.NewsResponse
 import com.ae.news.models.source.Source
-import com.ae.news.models.sourcesResponse.SourcesResponse
 import com.ae.news.ui.home.fragments.article.ArticleFragmentSheet
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
-import com.google.gson.Gson
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class NewsFragment : Fragment() {
+    val viewModel: NewsViewModel by viewModels<NewsViewModel>()
     private var _binding: FragmentNewsBinding? = null
     private val binding get() = _binding!!
-    private var sourcesCall: Call<SourcesResponse>? = null
-    private var newsCall: Call<NewsResponse>? = null
     private var adapter = NewsAdapter()
     private var category: Category? = null
 
@@ -48,41 +40,27 @@ class NewsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        observeLiveDate()
         initRecycler()
-        loadSources()
+        category?.let { viewModel.loadSources(it.id) }
+    }
+
+    private fun observeLiveDate() {
+        viewModel.loadingState.observe(viewLifecycleOwner) {
+            if (it) {
+                showLoadingView()
+            } else {
+                showSuccessView()
+            }
+        }
+        viewModel.errorState.observe(viewLifecycleOwner) { showErrorView(it) }
+        viewModel.sourcesLiveData.observe(viewLifecycleOwner) { bindTabsView(it) }
+        viewModel.newsLiveData.observe(viewLifecycleOwner) { bindNewsView(it) }
+
     }
 
     private fun initRecycler() {
         binding.rvNews.adapter = adapter
-    }
-
-    private fun loadSources() {
-        showLoadingView()
-        sourcesCall = ApiManager.webServices().getSources(category!!.id)
-        sourcesCall?.enqueue(object : Callback<SourcesResponse> {
-
-            override fun onFailure(response: Call<SourcesResponse>, error: Throwable) {
-                showErrorView(
-                    error.localizedMessage ?: getString(R.string.wrong)
-                ) { loadSources() }
-            }
-
-            override fun onResponse(
-                call: Call<SourcesResponse>, response: Response<SourcesResponse>
-            ) {
-                if (!response.isSuccessful) {
-                    val errorResponse = Gson().fromJson(
-                        response.errorBody()?.string(), ErrorResponse::class.java
-                    )
-                    val message = errorResponse.message ?: getString(R.string.wrong)
-                    showErrorView(message) { loadSources() }
-                    return
-                }
-                if (_binding == null) return
-                showSuccessView()
-                bindTabsView(response.body()?.sources)
-            }
-        })
     }
 
     private fun bindTabsView(sources: List<Source?>?) {
@@ -95,46 +73,17 @@ class NewsFragment : Fragment() {
         binding.tabsSources.addOnTabSelectedListener(object : OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 val source = tab?.tag as Source
-                source.id?.let { loadNews(it) }
+                source.id?.let { viewModel.loadNews(it) }
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
                 val source = tab?.tag as Source
-                source.id?.let { loadNews(it) }
+                source.id?.let { viewModel.loadNews(it) }
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
         })
         binding.tabsSources.getTabAt(0)?.select()
-    }
-
-    private fun loadNews(sourceId: String) {
-        showLoadingView()
-        newsCall = ApiManager.webServices().getNews(sourceId)
-        newsCall?.enqueue(object : Callback<NewsResponse> {
-
-            override fun onFailure(response: Call<NewsResponse>, error: Throwable) {
-                showErrorView(
-                    error.localizedMessage ?: getString(R.string.wrong)
-                ) { loadNews(sourceId) }
-            }
-
-            override fun onResponse(
-                call: Call<NewsResponse>, response: Response<NewsResponse>
-            ) {
-                if (!response.isSuccessful) {
-                    val errorResponse = Gson().fromJson(
-                        response.errorBody()?.string(), ErrorResponse::class.java
-                    )
-                    val message = errorResponse.message ?: getString(R.string.wrong)
-                    showErrorView(message) { loadNews(sourceId) }
-                    return
-                }
-                if (_binding == null) return
-                showSuccessView()
-                bindNewsView(response.body()?.articles)
-            }
-        })
     }
 
     private fun bindNewsView(newsList: List<News?>?) {
@@ -156,20 +105,17 @@ class NewsFragment : Fragment() {
         binding.error.isVisible = false
     }
 
-    private fun showErrorView(errorText: String?, onTryAgainClick: () -> Unit) {
+    private fun showErrorView(errorState: ErrorState) {
         binding.loading.isVisible = false
         binding.error.isVisible = true
-        binding.tvError.text = errorText
+        binding.tvError.text = errorState.errorMessage
         binding.btnError.setOnClickListener {
-            onTryAgainClick.invoke()
+            errorState.onRetry?.invoke()
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-
         _binding = null
-        sourcesCall = null
-        newsCall = null
     }
 }

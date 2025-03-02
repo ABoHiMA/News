@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("kotlin-parcelize")
+    id("kotlin-kapt")
 }
 
 android {
@@ -35,6 +36,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        dataBinding = true
     }
     androidResources {
         generateLocaleConfig = true
@@ -42,6 +44,10 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.fragment.ktx)
+
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.timeago)
     implementation(libs.glide)
     implementation(libs.logging.interceptor)

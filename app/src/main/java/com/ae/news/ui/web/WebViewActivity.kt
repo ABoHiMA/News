@@ -3,8 +3,8 @@ package com.ae.news.ui.web
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.ae.news.common.Utils
 import com.ae.news.databinding.ActivityWebViewBinding
-import com.ae.news.utils.Utils
 
 
 class WebViewActivity : AppCompatActivity() {
