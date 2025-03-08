@@ -7,15 +7,16 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.ae.domain.models.News
+import com.ae.domain.models.Source
 import com.ae.news.common.ErrorState
 import com.ae.news.databinding.FragmentNewsBinding
 import com.ae.news.models.categories.Category
-import com.ae.news.models.newsResponse.News
-import com.ae.news.models.source.Source
-import com.ae.news.ui.home.fragments.article.ArticleFragmentSheet
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class NewsFragment : Fragment() {
     val viewModel: NewsViewModel by viewModels<NewsViewModel>()
     private var _binding: FragmentNewsBinding? = null
@@ -66,19 +67,19 @@ class NewsFragment : Fragment() {
     private fun bindTabsView(sources: List<Source?>?) {
         sources?.forEach { source ->
             val tab = binding.tabsSources.newTab()
-            tab.text = source?.name
+            tab.text = source?.sourceName
             tab.tag = source
             binding.tabsSources.addTab(tab)
         }
         binding.tabsSources.addOnTabSelectedListener(object : OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 val source = tab?.tag as Source
-                source.id?.let { viewModel.loadNews(it) }
+                source.sourceId?.let { viewModel.loadNews(it) }
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
                 val source = tab?.tag as Source
-                source.id?.let { viewModel.loadNews(it) }
+                source.sourceId?.let { viewModel.loadNews(it) }
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
@@ -87,13 +88,15 @@ class NewsFragment : Fragment() {
     }
 
     private fun bindNewsView(newsList: List<News?>?) {
-        adapter.setNews(newsList) { onNewsClick(it) }
+        adapter.setNews(newsList) {
+//            onNewsClick(it)
+        }
     }
 
-    private fun onNewsClick(news: News?) {
-        val sheet = ArticleFragmentSheet.getInstance(news!!)
-        sheet.show(requireActivity().supportFragmentManager, "")
-    }
+//    private fun onNewsClick(news: News?) {
+//        val sheet = ArticleFragmentSheet.getInstance(news!!)
+//        sheet.show(requireActivity().supportFragmentManager, "")
+//    }
 
     private fun showLoadingView() {
         binding.loading.isVisible = true

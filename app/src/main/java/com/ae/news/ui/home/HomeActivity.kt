@@ -21,7 +21,9 @@ import com.ae.news.ui.home.fragments.category.CategoryFragment
 import com.ae.news.ui.home.fragments.egypt.EgyptNewsFragment
 import com.ae.news.ui.home.fragments.news.NewsFragment
 import com.ae.news.ui.search.SearchActivity
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
     private lateinit var themeItems: Array<String>
@@ -195,7 +197,8 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun startNewsFragment(category: Category) {
-        supportFragmentManager.beginTransaction().setCustomAnimations(
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(
             R.anim.enter_from_right,
             R.anim.exit_to_left,
         ).replace(

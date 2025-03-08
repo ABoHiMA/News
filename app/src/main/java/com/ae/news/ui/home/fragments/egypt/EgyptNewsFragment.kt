@@ -1,25 +1,9 @@
 package com.ae.news.ui.home.fragments.egypt
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import com.ae.news.R
-import com.ae.news.api.manager.ApiManager
-import com.ae.news.databinding.FragmentEgyptNewsBinding
-import com.ae.news.models.errorResponse.ErrorResponse
-import com.ae.news.models.newsResponse.News
-import com.ae.news.models.newsResponse.NewsResponse
-import com.ae.news.ui.home.fragments.article.ArticleFragmentSheet
-import com.ae.news.ui.home.fragments.news.NewsAdapter
-import com.google.gson.Gson
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class EgyptNewsFragment : Fragment() {
+    /*
     private var _binding: FragmentEgyptNewsBinding? = null
     private val binding get() = _binding!!
     private val adapter = NewsAdapter()
@@ -44,20 +28,20 @@ class EgyptNewsFragment : Fragment() {
 
     private fun loadEgyptNews() {
         showLoadingView()
-        ApiManager.webServices().getSearchedNews(getString(R.string.egy))
-            .enqueue(object : Callback<NewsResponse> {
-                override fun onFailure(call: Call<NewsResponse>, error: Throwable) {
+        com.ae.data.api.manager.ApiManager.webServices().getSearchedNews(getString(R.string.egy))
+            .enqueue(object : Callback<com.ae.data.models.newsResponse.NewsResponse> {
+                override fun onFailure(call: Call<com.ae.data.models.newsResponse.NewsResponse>, error: Throwable) {
                     showErrorView(
                         error.localizedMessage ?: getString(R.string.wrong)
                     ) { loadEgyptNews() }
                 }
 
                 override fun onResponse(
-                    call: Call<NewsResponse>, response: Response<NewsResponse>
+                    call: Call<com.ae.data.models.newsResponse.NewsResponse>, response: Response<com.ae.data.models.newsResponse.NewsResponse>
                 ) {
                     if (!response.isSuccessful) {
                         val errorResponse = Gson().fromJson(
-                            response.errorBody()?.string(), ErrorResponse::class.java
+                            response.errorBody()?.string(), com.ae.data.models.errorResponse.ErrorResponse::class.java
                         )
                         val message = errorResponse.message ?: getString(R.string.wrong)
                         showErrorView(message) { loadEgyptNews() }
@@ -102,4 +86,6 @@ class EgyptNewsFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
+     */
 }

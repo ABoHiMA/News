@@ -4,8 +4,8 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.ae.domain.models.News
 import com.ae.news.databinding.ItemNewsBinding
-import com.ae.news.models.newsResponse.News
 
 class NewsAdapter : RecyclerView.Adapter<NewsAdapter.ViewHolder>() {
     private var newsList: List<News?>? = null
@@ -37,6 +37,7 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.ViewHolder>() {
         RecyclerView.ViewHolder(itemBinding.root) {
         fun bindData(news: News?) {
             itemBinding.newsItem = news
+            itemBinding.executePendingBindings()
         }
     }
 }
