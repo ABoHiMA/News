@@ -1,10 +1,24 @@
 package com.ae.news.ui.search
 
+import android.os.Bundle
+import android.view.View
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
+import com.ae.domain.models.News
+import com.ae.news.common.ErrorState
+import com.ae.news.databinding.ActivitySearchBinding
+import com.ae.news.ui.home.fragments.article.ArticleFragmentSheet
+import com.ae.news.ui.home.fragments.news.NewsAdapter
+import com.ae.news.ui.home.fragments.news.NewsViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class SearchActivity : AppCompatActivity() {
-    /*
+    private val viewModel: NewsViewModel by viewModels<NewsViewModel>()
     private lateinit var binding: ActivitySearchBinding
     private val adapter = NewsAdapter()
 
@@ -14,8 +28,25 @@ class SearchActivity : AppCompatActivity() {
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        observeLiveData()
         showEmptyView()
         initSearchView()
+    }
+
+    private fun observeLiveData() {
+        viewModel.loadingState.observe(this) { isLoading ->
+            if (isLoading) {
+                showLoadingView()
+            } else {
+                showSuccessView()
+            }
+        }
+        viewModel.errorState.observe(this) {
+            showErrorView(it)
+        }
+        viewModel.newsLiveData.observe(this) { newsList ->
+            showSearchedNewsView(newsList)
+        }
     }
 
     private fun initSearchView() {
@@ -44,30 +75,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun loadNews(query: String) {
-        showLoadingView()
-        com.ae.data.api.manager.ApiManager.webServices().getSearchedNews(query).enqueue(object : Callback<com.ae.data.models.newsResponse.NewsResponse> {
-            override fun onFailure(call: Call<com.ae.data.models.newsResponse.NewsResponse>, error: Throwable) {
-                showErrorView(
-                    error.localizedMessage ?: getString(R.string.wrong)
-                ) { loadNews(query) }
-            }
-
-            override fun onResponse(
-                call: Call<com.ae.data.models.newsResponse.NewsResponse>, response: Response<com.ae.data.models.newsResponse.NewsResponse>
-            ) {
-                if (!response.isSuccessful) {
-                    val errorResponse = Gson().fromJson(
-                        response.errorBody()?.string(), com.ae.data.models.errorResponse.ErrorResponse::class.java
-                    )
-                    val message = errorResponse.message ?: getString(R.string.wrong)
-                    showErrorView(message) { loadNews(query) }
-                    return
-                }
-                showSuccessView()
-                showSearchedNewsView(response.body()?.articles)
-            }
-
-        })
+        viewModel.loadNews(query = query)
     }
 
     private fun showSearchedNewsView(newsList: List<News?>?) {
@@ -97,15 +105,13 @@ class SearchActivity : AppCompatActivity() {
         binding.error.isVisible = false
     }
 
-    private fun showErrorView(errorText: String?, onTryAgainClick: () -> Unit) {
+    private fun showErrorView(errorState: ErrorState) {
         binding.loading.isVisible = false
         binding.empty.isVisible = false
         binding.error.isVisible = true
-        binding.tvError.text = errorText
+        binding.tvError.text = errorState.errorMessage
         binding.btnError.setOnClickListener {
-            onTryAgainClick.invoke()
+            errorState.onRetry?.invoke()
         }
     }
-
-     */
 }

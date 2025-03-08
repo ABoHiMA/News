@@ -1,9 +1,24 @@
 package com.ae.news.ui.home.fragments.egypt
 
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import com.ae.domain.models.News
+import com.ae.news.R
+import com.ae.news.common.ErrorState
+import com.ae.news.databinding.FragmentEgyptNewsBinding
+import com.ae.news.ui.home.fragments.article.ArticleFragmentSheet
+import com.ae.news.ui.home.fragments.news.NewsAdapter
+import com.ae.news.ui.home.fragments.news.NewsViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class EgyptNewsFragment : Fragment() {
-    /*
+    private val viewModel: NewsViewModel by viewModels<NewsViewModel>()
     private var _binding: FragmentEgyptNewsBinding? = null
     private val binding get() = _binding!!
     private val adapter = NewsAdapter()
@@ -17,41 +32,34 @@ class EgyptNewsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        observeLiveData()
         initEgyptView()
+    }
+
+    private fun observeLiveData() {
+        viewModel.loadingState.observe(viewLifecycleOwner) { isLoading ->
+            if (isLoading) {
+                showLoadingView()
+            } else {
+                showSuccessView()
+            }
+        }
+        viewModel.errorState.observe(viewLifecycleOwner) {
+            showErrorView(it)
+        }
+        viewModel.newsLiveData.observe(viewLifecycleOwner) { newsList ->
+            showEgyptNewsView(newsList)
+        }
     }
 
     private fun initEgyptView() {
         binding.rvEgy.adapter = adapter
-
         loadEgyptNews()
     }
 
     private fun loadEgyptNews() {
-        showLoadingView()
-        com.ae.data.api.manager.ApiManager.webServices().getSearchedNews(getString(R.string.egy))
-            .enqueue(object : Callback<com.ae.data.models.newsResponse.NewsResponse> {
-                override fun onFailure(call: Call<com.ae.data.models.newsResponse.NewsResponse>, error: Throwable) {
-                    showErrorView(
-                        error.localizedMessage ?: getString(R.string.wrong)
-                    ) { loadEgyptNews() }
-                }
-
-                override fun onResponse(
-                    call: Call<com.ae.data.models.newsResponse.NewsResponse>, response: Response<com.ae.data.models.newsResponse.NewsResponse>
-                ) {
-                    if (!response.isSuccessful) {
-                        val errorResponse = Gson().fromJson(
-                            response.errorBody()?.string(), com.ae.data.models.errorResponse.ErrorResponse::class.java
-                        )
-                        val message = errorResponse.message ?: getString(R.string.wrong)
-                        showErrorView(message) { loadEgyptNews() }
-                        return
-                    }
-                    showSuccessView()
-                    showEgyptNewsView(response.body()?.articles)
-                }
-
-            })
+        viewModel.loadNews(query = getString(R.string.egy))
     }
 
     private fun showEgyptNewsView(newsList: List<News?>?) {
@@ -73,12 +81,12 @@ class EgyptNewsFragment : Fragment() {
         binding.error.isVisible = false
     }
 
-    private fun showErrorView(errorText: String?, onTryAgainClick: () -> Unit) {
+    private fun showErrorView(errorState: ErrorState) {
         binding.loading.isVisible = false
         binding.error.isVisible = true
-        binding.tvError.text = errorText
+        binding.tvError.text = errorState.errorMessage
         binding.btnError.setOnClickListener {
-            onTryAgainClick.invoke()
+            errorState.onRetry?.invoke()
         }
     }
 
@@ -86,6 +94,4 @@ class EgyptNewsFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
-     */
 }

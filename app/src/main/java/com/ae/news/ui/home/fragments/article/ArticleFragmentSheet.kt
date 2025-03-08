@@ -1,10 +1,18 @@
 package com.ae.news.ui.home.fragments.article
 
-// import com.ae.news.models.newsResponse.News
+import android.content.Intent
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import com.ae.domain.models.News
+import com.ae.news.common.Utils
+import com.ae.news.common.Utils.imageWithGlide
+import com.ae.news.databinding.FragmentArticleSheetBinding
+import com.ae.news.ui.web.WebViewActivity
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class ArticleFragmentSheet : BottomSheetDialogFragment() {
-    /*
     private var _binding: FragmentArticleSheetBinding? = null
     private val binding get() = _binding!!
     private var article: News? = null
@@ -32,8 +40,7 @@ class ArticleFragmentSheet : BottomSheetDialogFragment() {
     private fun initSheet() {
         binding.txtTitle.text = article?.description
 
-        Glide.with(binding.root).load(article?.urlToImage).error(R.drawable.ic_launcher)
-            .into(binding.imgNews)
+        imageWithGlide(imageView = binding.imgNews, urlToImage = article?.urlToImage)
 
         binding.btnViewFull.setOnClickListener {
             val intent = Intent(requireContext(), WebViewActivity::class.java)
@@ -47,6 +54,4 @@ class ArticleFragmentSheet : BottomSheetDialogFragment() {
         super.onDestroyView()
         _binding = null
     }
-
-     */
 }

@@ -4,12 +4,14 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.drawable.ColorDrawable
 import android.provider.Settings
+import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getString
 import androidx.core.os.LocaleListCompat
 import com.ae.news.R
+import com.bumptech.glide.Glide
 
 object Utils {
     var sharedPreferences: SharedPreferences? = null
@@ -17,6 +19,13 @@ object Utils {
     const val SAVED_LANG_POS = "SAVED_LANG_POS"
     const val URL = "URL"
     const val GOOGLE = "https://www.google.com"
+
+    fun imageWithGlide(imageView: ImageView, urlToImage: String? = "") {
+        Glide.with(imageView)
+            .load(urlToImage)
+            .error(R.drawable.ic_launcher)
+            .into(imageView)
+    }
 
     fun alertDialog(
         context: Context, message: String, onAccept: () -> Unit, onDecline: () -> Unit

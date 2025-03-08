@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.ae.news.common.Utils
 import com.ae.news.databinding.ActivityWebViewBinding
 
-
 class WebViewActivity : AppCompatActivity() {
     private lateinit var binding: ActivityWebViewBinding
     private lateinit var url: String

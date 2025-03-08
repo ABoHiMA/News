@@ -9,8 +9,8 @@ import javax.inject.Inject
 class NewsOnlineSourceImpl @Inject constructor(private val webServices: WebServices) :
     NewsOnlineDataSource {
 
-    override suspend fun getNews(sourceId: String): List<News> {
-        val response = webServices.getNews(sourceId)
+    override suspend fun getNews(sourceId: String?, query: String?): List<News> {
+        val response = webServices.getNews(source = sourceId, query = query)
         val newsList =
             response.articles?.filterNotNull()?.map { newsDTO: NewsDTO -> newsDTO.toNews() }
                 ?.toList()

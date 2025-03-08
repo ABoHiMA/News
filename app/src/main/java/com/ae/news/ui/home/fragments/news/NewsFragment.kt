@@ -12,6 +12,7 @@ import com.ae.domain.models.Source
 import com.ae.news.common.ErrorState
 import com.ae.news.databinding.FragmentNewsBinding
 import com.ae.news.models.categories.Category
+import com.ae.news.ui.home.fragments.article.ArticleFragmentSheet
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import dagger.hilt.android.AndroidEntryPoint
@@ -89,14 +90,14 @@ class NewsFragment : Fragment() {
 
     private fun bindNewsView(newsList: List<News?>?) {
         adapter.setNews(newsList) {
-//            onNewsClick(it)
+            onNewsClick(it)
         }
     }
 
-//    private fun onNewsClick(news: News?) {
-//        val sheet = ArticleFragmentSheet.getInstance(news!!)
-//        sheet.show(requireActivity().supportFragmentManager, "")
-//    }
+    private fun onNewsClick(news: News?) {
+        val sheet = ArticleFragmentSheet.getInstance(news!!)
+        sheet.show(requireActivity().supportFragmentManager, "")
+    }
 
     private fun showLoadingView() {
         binding.loading.isVisible = true

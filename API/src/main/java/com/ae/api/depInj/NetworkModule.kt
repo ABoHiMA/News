@@ -33,14 +33,19 @@ class NetworkModule {
         loggingInterceptor: HttpLoggingInterceptor,
         authInterceptor: AuthInterceptor,
     ): OkHttpClient =
-        OkHttpClient.Builder().addInterceptor(loggingInterceptor).addInterceptor(authInterceptor)
+        OkHttpClient.Builder()
+            .addInterceptor(loggingInterceptor)
+            .addInterceptor(authInterceptor)
             .build()
 
     @Provides
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit =
-        Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).client(okHttpClient)
-            .baseUrl("https://newsapi.org/").build()
+        Retrofit.Builder()
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(okHttpClient)
+            .baseUrl("https://newsapi.org/")
+            .build()
 
     @Provides
     @Singleton

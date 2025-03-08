@@ -38,12 +38,12 @@ class NewsViewModel @Inject constructor(
         }
     }
 
-    fun loadNews(sourceId: String) {
+    fun loadNews(sourceId: String? = null, query: String? = null) {
         loadingState.value = true
 
         viewModelScope.launch {
             try {
-                val newsList = getNewsUseCase.invoke(sourceId)
+                val newsList = getNewsUseCase.invoke(sourceId = sourceId, query = query)
                 newsLiveData.value = newsList
                 loadingState.value = false
             } catch (error: Exception) {
@@ -53,11 +53,5 @@ class NewsViewModel @Inject constructor(
             }
         }
     }
-
-//    private fun handleError(errorHttp: HttpException): com.ae.data.models.errorResponse.ErrorResponse? {
-//        return Gson().fromJson(
-//            errorHttp.response()?.errorBody()?.string(), com.ae.data.models.errorResponse.ErrorResponse::class.java
-//        )
-//    }
 
 }

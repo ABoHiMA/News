@@ -7,8 +7,9 @@ import javax.inject.Inject
 
 class NewsRepoImpl @Inject constructor(private val newsOnlineDataSource: NewsOnlineDataSource) :
     NewsRepository {
-    override suspend fun getNews(sourceId: String): List<News> {
-        val news = newsOnlineDataSource.getNews(sourceId)
+
+    override suspend fun getNews(sourceId: String?, query: String?): List<News> {
+        val news = newsOnlineDataSource.getNews(sourceId = sourceId, query = query)
         return news
     }
 }
