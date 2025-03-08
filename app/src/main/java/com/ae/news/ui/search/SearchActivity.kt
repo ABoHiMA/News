@@ -1,26 +1,10 @@
 package com.ae.news.ui.search
 
-import android.os.Bundle
-import android.view.View
-import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
-import androidx.core.widget.addTextChangedListener
-import com.ae.news.R
-import com.ae.news.api.manager.ApiManager
-import com.ae.news.databinding.ActivitySearchBinding
-import com.ae.news.models.errorResponse.ErrorResponse
-import com.ae.news.models.newsResponse.News
-import com.ae.news.models.newsResponse.NewsResponse
-import com.ae.news.ui.home.fragments.article.ArticleFragmentSheet
-import com.ae.news.ui.home.fragments.news.NewsAdapter
-import com.google.gson.Gson
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+
 
 class SearchActivity : AppCompatActivity() {
+    /*
     private lateinit var binding: ActivitySearchBinding
     private val adapter = NewsAdapter()
 
@@ -61,19 +45,19 @@ class SearchActivity : AppCompatActivity() {
 
     private fun loadNews(query: String) {
         showLoadingView()
-        ApiManager.webServices().getSearchedNews(query).enqueue(object : Callback<NewsResponse> {
-            override fun onFailure(call: Call<NewsResponse>, error: Throwable) {
+        com.ae.data.api.manager.ApiManager.webServices().getSearchedNews(query).enqueue(object : Callback<com.ae.data.models.newsResponse.NewsResponse> {
+            override fun onFailure(call: Call<com.ae.data.models.newsResponse.NewsResponse>, error: Throwable) {
                 showErrorView(
                     error.localizedMessage ?: getString(R.string.wrong)
                 ) { loadNews(query) }
             }
 
             override fun onResponse(
-                call: Call<NewsResponse>, response: Response<NewsResponse>
+                call: Call<com.ae.data.models.newsResponse.NewsResponse>, response: Response<com.ae.data.models.newsResponse.NewsResponse>
             ) {
                 if (!response.isSuccessful) {
                     val errorResponse = Gson().fromJson(
-                        response.errorBody()?.string(), ErrorResponse::class.java
+                        response.errorBody()?.string(), com.ae.data.models.errorResponse.ErrorResponse::class.java
                     )
                     val message = errorResponse.message ?: getString(R.string.wrong)
                     showErrorView(message) { loadNews(query) }
@@ -123,4 +107,5 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
+     */
 }

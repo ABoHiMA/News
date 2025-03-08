@@ -1,19 +1,10 @@
 package com.ae.news.ui.home.fragments.article
 
-import android.content.Intent
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import com.ae.news.R
-import com.ae.news.common.Utils
-import com.ae.news.databinding.FragmentArticleSheetBinding
-import com.ae.news.models.newsResponse.News
-import com.ae.news.ui.web.WebViewActivity
-import com.bumptech.glide.Glide
+// import com.ae.news.models.newsResponse.News
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class ArticleFragmentSheet : BottomSheetDialogFragment() {
+    /*
     private var _binding: FragmentArticleSheetBinding? = null
     private val binding get() = _binding!!
     private var article: News? = null
@@ -56,4 +47,6 @@ class ArticleFragmentSheet : BottomSheetDialogFragment() {
         super.onDestroyView()
         _binding = null
     }
+
+     */
 }

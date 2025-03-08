@@ -3,18 +3,22 @@ package com.ae.news.ui.home.fragments.news
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ae.domain.models.News
+import com.ae.domain.models.Source
+import com.ae.domain.useCases.GetNewsUseCase
+import com.ae.domain.useCases.GetSourcesUseCase
 import com.ae.news.R
-import com.ae.news.api.manager.ApiManager
 import com.ae.news.common.ErrorState
-import com.ae.news.models.errorResponse.ErrorResponse
-import com.ae.news.models.newsResponse.News
-import com.ae.news.models.source.Source
-import com.google.gson.Gson
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
+import javax.inject.Inject
 
-class NewsViewModel : ViewModel() {
+@HiltViewModel
+class NewsViewModel @Inject constructor(
+    private val getNewsUseCase: GetNewsUseCase,
+    private val getSourcesUseCase: GetSourcesUseCase,
+) : ViewModel() {
     val loadingState = MutableLiveData<Boolean>()
     val errorState = MutableLiveData<ErrorState>()
     val sourcesLiveData = MutableLiveData<List<Source?>?>()
@@ -24,14 +28,11 @@ class NewsViewModel : ViewModel() {
         loadingState.value = true
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val response = ApiManager.webServices().getSources(categoryId)
+                val sourcesList = getSourcesUseCase.invoke(categoryId)
                 loadingState.postValue(false)
-                sourcesLiveData.postValue(response.sources)
+                sourcesLiveData.postValue(sourcesList)
             } catch (error: Exception) {
                 val message = error.localizedMessage ?: R.string.wrong.toString()
-                errorState.postValue(ErrorState(message) { loadSources(categoryId) })
-            } catch (errorHttp: HttpException) {
-                val message = handleError(errorHttp)?.message ?: R.string.wrong.toString()
                 errorState.postValue(ErrorState(message) { loadSources(categoryId) })
             }
         }
@@ -42,25 +43,21 @@ class NewsViewModel : ViewModel() {
 
         viewModelScope.launch {
             try {
-                val response = ApiManager.webServices().getNews(sourceId)
-                newsLiveData.value = response.articles
+                val newsList = getNewsUseCase.invoke(sourceId)
+                newsLiveData.value = newsList
                 loadingState.value = false
             } catch (error: Exception) {
                 val message = error.localizedMessage ?: R.string.wrong.toString()
-                errorState.value = ErrorState(message) { loadNews(sourceId) }
-                loadingState.value = false
-            } catch (errorHttp: HttpException) {
-                val message = handleError(errorHttp)?.message ?: R.string.wrong.toString()
                 errorState.value = ErrorState(message) { loadNews(sourceId) }
                 loadingState.value = false
             }
         }
     }
 
-    private fun handleError(errorHttp: HttpException): ErrorResponse? {
-        return Gson().fromJson(
-            errorHttp.response()?.errorBody()?.string(), ErrorResponse::class.java
-        )
-    }
+//    private fun handleError(errorHttp: HttpException): com.ae.data.models.errorResponse.ErrorResponse? {
+//        return Gson().fromJson(
+//            errorHttp.response()?.errorBody()?.string(), com.ae.data.models.errorResponse.ErrorResponse::class.java
+//        )
+//    }
 
 }
